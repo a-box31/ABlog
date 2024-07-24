@@ -1,2 +1,2 @@
 # ABlog
-Creating a blogging website using mySQL, Expess.js, React.js, and Node.js.
+Creating a blogging website using mySQL, Express.js, React.js, and Node.js.

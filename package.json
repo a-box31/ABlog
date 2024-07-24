@@ -1,0 +1,21 @@
+{
+  "name": "ablog",
+  "version": "1.0.0",
+  "description": "Creating a blogging website using mySQL, Express.js, React.js, and Node.js.",
+  "type": "module",
+  "main": "database.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^5.0.0-beta.3",
+    "mysql2": "^3.10.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
