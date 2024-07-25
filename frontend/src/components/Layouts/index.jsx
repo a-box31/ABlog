@@ -1,12 +1,12 @@
 import "./index.scss";
 import NavBar from "../NavBar";
-import Outlet from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Footer from "../Footer";
 
-const Layouts = () => {
+const Layouts = ({ isLoggedIn }) => {
     return (
       <>
-        <NavBar />
+        <NavBar isLoggedIn={isLoggedIn} />
         <section className="page">
           <Outlet />
         </section>
