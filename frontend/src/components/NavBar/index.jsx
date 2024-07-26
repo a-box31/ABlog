@@ -16,10 +16,7 @@ const NavBar = ({ isLoggedIn }) => {
           <div className="nav-links">
             <ul>
               <li>
-                <Link to="#">About</Link>
-              </li>
-              <li>
-                <Link to="#">Contact</Link>
+                <Link to="#">Create</Link>
               </li>
               {isLoggedIn ? (
                 <li>
