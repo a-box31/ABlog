@@ -23,9 +23,19 @@ export async function getUsers() {
 
 }
 
-export async function getUser(id) {
+export async function getUserByID(id) {
   try {
     const [result] = await pool.query(`SELECT * FROM users WHERE id = ?`, [id]);
+    return result[0];
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function getUserByEmail(email) {
+  try {
+    const [result] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
     return result[0];
   } catch (e) {
     console.error(e);
@@ -43,7 +53,7 @@ export async function createUser(username, password, email, gender) {
       [username, password, email, gender]
     );
     const id = result.insertId;
-    return getUser(id);
+    return getUserByID(id);
   } catch (e) {
     console.error(e);
     return null;
