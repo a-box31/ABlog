@@ -8,7 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // function to submit the form
   const submit = async (e) => {
@@ -34,7 +34,8 @@ const Register = () => {
       }, 1000);
       
     } catch (e) {
-      console.error(e);
+      console.error(e.message);
+      alert(e.response.data);
     }
   };
 
