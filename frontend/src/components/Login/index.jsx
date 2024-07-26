@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -15,19 +18,30 @@ const Login = () => {
     }
 
     try {
-      const response = axios.post('http://localhost:3000/login', {
+      const response = await axios.post('http://localhost:3000/login', {
         email: email,
         password: password
       });
+
+      alert('Login successful!');
+
+      // redirect to home page
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+
+
+
     } catch (e) {
-      console.error(e);
+      console.error(e.message);
+      alert(e.response.data);
     }
   }
 
   return (
     <div>
       <h1>Login</h1>
-      <form action="POST">
+      <form>
         <div>
           <label htmlFor="email">Email</label>
           <input type="email" name="email" id="email" onChange={(e) => {setEmail(e.target.value)}} placeholder="Email" required/>
