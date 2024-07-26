@@ -17,6 +17,9 @@ VALUES
 -- @block
 SELECT * FROM users;
 
+-- @block
+SELECT * FROM users 
+WHERE email = 'thomaa2031@gmail.com';
 
 
 -- @block
