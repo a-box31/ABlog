@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/posts";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
 
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await api.post("/register", {
         username: username,
         email: email,
         password: password,
@@ -39,24 +38,49 @@ const Register = () => {
     }
   };
 
-  
   return (
     <div>
       <h1>Register</h1>
       <form>
         <div>
           <label htmlFor="username">Username</label>
-          <input type="text" name="username" id="username" onChange={(e)=>{setUsername(e.target.value)}} required/>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            required
+          />
         </div>
         <div>
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" onChange={(e)=>{setEmail(e.target.value)}} required/>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            required
+          />
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" onChange={(e)=>{setPassword(e.target.value)}} required/>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            required
+          />
         </div>
-        <button type="submit" onClick={submit}>Register</button>
+        <button type="submit" onClick={submit}>
+          Register
+        </button>
       </form>
     </div>
   );
