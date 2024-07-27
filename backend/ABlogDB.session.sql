@@ -36,3 +36,29 @@ DELETE FROM users WHERE id = 5;
 -- @block
 DELETE FROM users;
 DROP TABLE users;
+
+
+-- @block 
+CREATE TABLE sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+-- @block
+INSERT INTO sessions (user_id, token)
+VALUES 
+    (1, '1234567890'),
+    (2, '0987654321'),
+    (3, '1234567891'),
+    (4, '0987654320');
+
+
+
+-- @block
+SELECT * FROM sessions;
+
+-- @block
+DELETE FROM sessions;
