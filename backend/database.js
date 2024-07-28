@@ -61,6 +61,70 @@ export async function createUser(username, password, email, gender) {
 
 }
 
+export async function deleteUserByID(id) {
+  try {
+    const result = await pool.query(`DELETE FROM users WHERE id = ?`, [id]);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
 
+
+export async function getSessionByID(id) {
+  try {
+    const [result] = await pool.query(`SELECT * FROM sessions WHERE id = ?`, [id]);
+    return result[0];
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function getSession(token) {
+  try {
+    const [result] = await pool.query(`SELECT * FROM sessions WHERE token = ?`, [
+      token,
+    ]);
+    return result[0];
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function createSession( user_id, token ) {
+  try {
+    const [result] = await pool.query(
+      `
+      INSERT INTO sessions (user_id, token) 
+      VALUES ( ? , ? )
+      `,
+      [user_id, token]
+    );
+    const id = result.insertId;
+    return getSessionByID(id);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+
+}
+
+export async function deleteSession(token) {
+  try {
+    const [result] = await pool.query(
+      `
+      DELETE FROM sessions WHERE token = ?
+      `,
+      [token]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
 
 // console.log(users);
