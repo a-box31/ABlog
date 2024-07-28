@@ -1,4 +1,4 @@
-import { getUsers, getUserByID, getUserByEmail, createUser } from "./database.js";
+import { getUsers, getUserByID, getUserByEmail, createUser, deleteUserByID, getSession, createSession, deleteSession } from "./database.js";
 
 import express from "express";
 import cors from "cors";
@@ -39,32 +39,33 @@ app.post("/login", async (req, res) => {
 
   try {
     const { email, password } = req.body;
-    const user = await getUserByEmail(email);
+    const account = await getUserByEmail(email);
+
     // user not found
-    if (user == null) {
+    if (account == null) {
       res.status(404).send("Email not found");
       return;
     }
     // check if the password is correct
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, account.password);
 
     // if the password is correct, send the user object
     if (passwordMatch) {
       // create a new session for the user 
-      const sessionID = await bcrypt.hash(user.password, 10);
-      
+      const sessionID = await bcrypt.hash(password, 10);
+      const session = await createSession(account.id, sessionID);
+
       // return the to the cookie of the session to the client 
-      
       res
-        .cookie("sessionID", sessionID, {
-          expires: new Date( Date.now() + process.env.COOKIE_EXPIRY * 1 ),
-          httpOnly: true,
+        .cookie("sessionID", session.token , {
+          // expires: new Date( Date.now() + process.env.COOKIE_EXPIRY * 1 ),
+          httpOnly: false,
           secure: true,
           withCredentials: true,
           sameSite: "none",
         })
         .status(200)
-        .send(`Authenticated as ${user.username}`);
+        .send(`Authenticated as ${account.username}`);
 
       
     } else {
@@ -99,6 +100,66 @@ app.post("/register", async (req, res) => {
   }
 
 });
+
+app.delete("/users", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    // find the user session
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+
+    // ensure a session exists
+    if (session == null) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+
+    // check if the password matches the sessionID
+    const passwordMatch = await bcrypt.compare(password, session.token);
+    if(!passwordMatch){
+      res.status(401).send("Wrong Password");
+      return;
+    }
+
+    const sessionIsDeleted = await deleteSession(sessionID);
+    if (!sessionIsDeleted) {
+      res.status(404).send("Session Not Found");
+      return;
+    }else{
+      res.clearCookie("sessionID");
+    }
+
+    const userIsDeleted = await deleteUserByID(session.user_id);
+    if (!userIsDeleted) {
+      res.sendStatus(404).send("User Not Found")
+      return;
+    }
+
+    res.status(200).send("User Deleted Successfully").end();
+
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.delete("/session", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const result = await deleteSession(sessionID);
+    if (result) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
