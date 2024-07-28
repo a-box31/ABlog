@@ -62,3 +62,13 @@ SELECT * FROM sessions;
 
 -- @block
 DELETE FROM sessions;
+
+
+-- @block
+DROP TABLE sessions;
+
+
+-- @block
+SELECT * FROM users
+JOIN sessions
+ON users.id = sessions.user_id;
