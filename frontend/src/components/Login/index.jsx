@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
 
-const Login = () => {
+const Login = ({isLoggedIn}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => { 
+    if(isLoggedIn){
+      navigate("/account");
+    }
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault();

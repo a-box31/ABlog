@@ -15,13 +15,15 @@ const NavBar = ({ isLoggedIn }) => {
           </div>
           <div className="nav-links">
             <ul>
-              <li>
-                <Link to="#">Create</Link>
-              </li>
               {isLoggedIn ? (
-                <li>
-                  <Link to="#">Account</Link>
-                </li>
+                <>
+                  <li>
+                    <Link to="#">Create</Link>
+                  </li>
+                  <li>
+                    <Link to="account">Account</Link>
+                  </li>
+                </>
               ) : (
                 <>
                   <li>
