@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
 
-const Register = () => {
+const Register = ({ isLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  
 
   // function to submit the form
   const submit = async (e) => {
