@@ -101,6 +101,26 @@ app.post("/register", async (req, res) => {
 
 });
 
+app.get("/users", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+    const user = await getUserByID(session.user_id);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+})
+
 app.delete("/users", async (req, res) => {
   try {
     const { password } = req.body;
@@ -108,10 +128,9 @@ app.delete("/users", async (req, res) => {
     // find the user session
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
-
     // ensure a session exists
     if (session == null) {
-      res.status(401).send("Unauthorized");
+      res.status(401).send("Session Not Found");
       return;
     }
 
