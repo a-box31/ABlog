@@ -1,10 +1,23 @@
-import { getUsers, getUserByID, getUserByEmail, createUser, deleteUserByID, getSession, createSession, deleteSession } from "./database.js";
+import { 
+  getUsers, 
+  getUserByID, 
+  getUserByEmail, 
+  createUser, 
+  deleteUserByID, 
+  getSession, 
+  createSession, 
+  deleteSession, 
+  updateUserAvatar 
+} from "./database.js";
 
 import express from "express";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import path from "path";  
+import fs from "fs";
 
 const PORT = process.env.PORT;
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -13,10 +26,26 @@ const app = express();
 
 dotenv.config();
 
+app.use(express.static("public"));
 app.use(express.json());
 app.use(cors({ credentials: true, origin: CLIENT_URL }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  }
+  , 
+  filename: (req, file, cb) => {
+    console.log(file);
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname) );
+  }
+});
+
+// const storage = multer.memoryStorage();  // multer configuration
+const upload = multer({ storage: storage });  // multer configuration
 
 // app.get("/users", async (req, res) => {
 //     const users = await getUsers();
@@ -34,6 +63,125 @@ app.use(cookieParser());
 //     const user = await createUser(username, password, email, gender);
 //     res.status(201).send(user);
 // })
+
+
+app.get("/users", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const user = await getUserByID(session.user_id);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.delete("/users", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    // find the user session
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    // ensure a session exists
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+
+    // check if the password matches the sessionID
+    const passwordMatch = await bcrypt.compare(password, session.token);
+    if (!passwordMatch) {
+      res.status(401).send("Wrong Password");
+      return;
+    }
+
+    const sessionIsDeleted = await deleteSession(sessionID);
+    if (!sessionIsDeleted) {
+      res.status(404).send("Session Not Found");
+      return;
+    } else {
+      res.clearCookie("sessionID");
+    }
+
+    const userIsDeleted = await deleteUserByID(session.user_id);
+    if (!userIsDeleted) {
+      res.sendStatus(404).send("User Not Found");
+      return;
+    }
+
+    res.status(200).send("User Deleted Successfully").end();
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/avatar", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const user = await getUserByID(userID);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.send("http://localhost:3000/images/"+user.avatar);
+    // res.send("http://localhost:3000/images/avatar_1633940733664.jpg");
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/avatar", upload.single("avatar"), async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+
+    // delete the old avatar from the file system
+    // const user = await getUserByID(userID);
+    // if (user.avatar) {
+    //   const oldAvatar = path.join(__dirname, "public/images", user.avatar);
+    //   await fs.unlink(oldAvatar, (err) => {
+    //     if (err) {
+    //       console.error(err);
+    //       return;
+    //     }
+    //   });
+    // }
+
+    // update the user
+    const isUpdated = await updateUserAvatar(userID, req.file.filename);
+    if (!isUpdated) {
+      res.status(404).send("Something went wrong");
+      return;
+    }
+    res.status(200).send("Profile Updated Successfully");
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
 
 app.post("/login", async (req, res) => {
 
@@ -101,67 +249,6 @@ app.post("/register", async (req, res) => {
 
 });
 
-app.get("/users", async (req, res) => {
-  try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Unauthorized");
-      return;
-    }
-    const user = await getUserByID(session.user_id);
-    if (user == null) {
-      res.status(404).send("User Not Found");
-      return;
-    }
-    res.send(user);
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-})
-
-app.delete("/users", async (req, res) => {
-  try {
-    const { password } = req.body;
-
-    // find the user session
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    // ensure a session exists
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-
-    // check if the password matches the sessionID
-    const passwordMatch = await bcrypt.compare(password, session.token);
-    if(!passwordMatch){
-      res.status(401).send("Wrong Password");
-      return;
-    }
-
-    const sessionIsDeleted = await deleteSession(sessionID);
-    if (!sessionIsDeleted) {
-      res.status(404).send("Session Not Found");
-      return;
-    }else{
-      res.clearCookie("sessionID");
-    }
-
-    const userIsDeleted = await deleteUserByID(session.user_id);
-    if (!userIsDeleted) {
-      res.sendStatus(404).send("User Not Found")
-      return;
-    }
-
-    res.status(200).send("User Deleted Successfully").end();
-
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-});
 
 app.delete("/session", async (req, res) => {
   try {
