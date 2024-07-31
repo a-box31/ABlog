@@ -127,4 +127,21 @@ export async function deleteSession(token) {
   }
 }
 
+export async function updateUserAvatar(id, filename) {
+  try {
+    const [result] = await pool.query(
+      `
+      UPDATE users 
+      SET avatar = ? 
+      WHERE id = ?
+      `,
+      [filename, id]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
 // console.log(users);
