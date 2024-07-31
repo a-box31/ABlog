@@ -144,4 +144,21 @@ export async function updateUserAvatar(id, filename) {
   }
 }
 
+export async function updateUserBio(id, bio) {
+  try {
+    const [result] = await pool.query(
+      `
+      UPDATE users 
+      SET bio = ? 
+      WHERE id = ?
+      `,
+      [bio, id]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
 // console.log(users);
