@@ -9,8 +9,8 @@ const Layouts = ({ isLoggedIn }) => {
         <NavBar isLoggedIn={isLoggedIn} />
         <section className="page">
           <Outlet />
+          <Footer />
         </section>
-        <Footer />
       </>
     );
 }

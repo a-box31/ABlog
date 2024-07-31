@@ -7,7 +7,6 @@ import Register from "./components/Register";
 import Account from "./components/Account";
 import "./App.scss";
 import Cookies from "js-cookie";
-import api from "./api/posts";
 
 
 const App = () => {
@@ -42,7 +41,7 @@ const App = () => {
           {/* <Route path="contact" element={<Contact />} /> */}
           <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
           <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />
-          <Route path="account" element={<Account isLoggedIn={isLoggedIn} />} /> 
+          <Route path="account" element={<Account isLoggedIn={isLoggedIn} isEditable={true}/>} /> 
         </Route>
       </Routes>
     </>
