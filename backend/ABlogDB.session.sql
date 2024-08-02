@@ -4,7 +4,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     avatar VARCHAR(255) DEFAULT 'default.png',
-    bio VARCHAR(255)
+    bio TEXT
 );
 
 -- @block

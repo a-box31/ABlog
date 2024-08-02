@@ -7,7 +7,8 @@ import {
   getSession, 
   createSession, 
   deleteSession, 
-  updateUserAvatar 
+  updateUserAvatar,
+  updateUserBio,
 } from "./database.js";
 
 import express from "express";
@@ -148,7 +149,7 @@ app.get("/avatar", async (req, res) => {
   }
 });
 
-app.post("/avatar", upload.single("avatar"), async (req, res) => {
+app.put("/avatar", upload.single("avatar"), async (req, res) => {
   try {
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
@@ -158,19 +159,18 @@ app.post("/avatar", upload.single("avatar"), async (req, res) => {
     }
     const userID = session.user_id;
 
-    // delete the old avatar from the file system
-    // const user = await getUserByID(userID);
-    // if (user.avatar) {
-    //   const oldAvatar = path.join(__dirname, "public/images", user.avatar);
-    //   await fs.unlink(oldAvatar, (err) => {
-    //     if (err) {
-    //       console.error(err);
-    //       return;
-    //     }
-    //   });
-    // }
-
-    // update the user
+    // delete the old avatar from the file system storage
+    const user = await getUserByID(userID);
+    if (user.avatar !== "default.png") {
+      const oldAvatarPath = path.join(process.cwd(), "public/images", user.avatar);
+      await fs.unlink(oldAvatarPath, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    }
+    // update the user avatar in the database
     const isUpdated = await updateUserAvatar(userID, req.file.filename);
     if (!isUpdated) {
       res.status(404).send("Something went wrong");
@@ -181,6 +181,52 @@ app.post("/avatar", upload.single("avatar"), async (req, res) => {
     console.error(e);
     res.sendStatus(500);
   }
+});
+
+
+app.get("/bio", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const user = await getUserByID(userID);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.send(user.bio);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.put("/bio", async (req, res) => {
+  try{
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    
+    const { bio } = req.body;
+    const isUpdated = await updateUserBio(userID, bio);
+    // if (!isUpdated) {
+    //   res.status(404).send("Something went wrong");
+    //   return;
+    // }
+    // res.status(200).send("Bio Updated Successfully");
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+
 });
 
 app.post("/login", async (req, res) => {
