@@ -133,9 +133,9 @@ const Account = ({ isLoggedIn, isEditable }) => {
   };
 
   return (
-    <div className="account-container">
+    <>
       <div className="name-container">
-        <h1>{account}</h1>
+        <h1>@{account}</h1>
       </div>
       {editable ? (
         <div className="profile-editor">
@@ -187,9 +187,11 @@ const Account = ({ isLoggedIn, isEditable }) => {
         <div className="profile-container">
           <img src={avatar} alt="Avatar" className="avatar" />
           <p>{bio}</p>
-          <button className="btn" onClick={toggleEdit}>
-            Edit
-          </button>
+          <div className="edit-option">
+            <button className="btn" onClick={toggleEdit}>
+              Edit
+            </button>
+          </div>
         </div>
       )}
       <div>
@@ -217,7 +219,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
