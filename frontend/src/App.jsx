@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Account from "./components/Account";
+import Create from "./components/Create";
 import "./App.scss";
 import Cookies from "js-cookie";
 
@@ -37,7 +38,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layouts isLoggedIn={isLoggedIn} />}>
           <Route index element={<Home />} />
-          {/* <Route path="create" element={<Create />} /> */}
+          <Route path="create" element={<Create />} />
           {/* <Route path="contact" element={<Contact />} /> */}
           <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
           <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />

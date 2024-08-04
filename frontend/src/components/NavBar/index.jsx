@@ -41,7 +41,7 @@ const NavBar = ({ isLoggedIn }) => {
             {isLoggedIn ? (
               <>
                 <li>
-                  <Link to="#">Create</Link>
+                  <Link to="create">Create</Link>
                 </li>
                 <li>
                   <Link to="account">{account}</Link>

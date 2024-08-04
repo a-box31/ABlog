@@ -74,3 +74,17 @@ DROP TABLE sessions;
 SELECT * FROM users
 JOIN sessions
 ON users.id = sessions.user_id;
+
+
+-- @block
+CREATE TABLE blogs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    owner_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id)
+);
+
+
+

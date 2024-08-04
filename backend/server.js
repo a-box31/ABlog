@@ -229,6 +229,30 @@ app.put("/bio", async (req, res) => {
 
 });
 
+app.post("/create", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const user = await getUserByID(userID);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    const { title, media, content } = req.body;
+    console.log(title, media, content);
+    res.sendStatus(201);
+    
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+})
+
 app.post("/login", async (req, res) => {
 
   try {
