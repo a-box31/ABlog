@@ -39,10 +39,9 @@ const App = () => {
         <Route path="/" element={<Layouts isLoggedIn={isLoggedIn} />}>
           <Route index element={<Home />} />
           <Route path="create" element={<Create />} />
-          {/* <Route path="contact" element={<Contact />} /> */}
           <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
           <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />
-          <Route path="account" element={<Account isLoggedIn={isLoggedIn} isEditable={true}/>} /> 
+          <Route path="account" element={<Account isLoggedIn={isLoggedIn} isEditable={false}/>} /> 
         </Route>
       </Routes>
     </>

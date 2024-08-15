@@ -245,8 +245,14 @@ app.post("/create", async (req, res) => {
     }
     const { title, media, content } = req.body;
     console.log(title, media, content);
-    res.sendStatus(201);
-    
+
+    // save the post to the database
+    // const post = await createBlog(userID, title, media, content);
+    // if (post == null) {
+    //   res.status(404).send("Post not created");
+    //   return;
+    res.status(201).send("Blogged Successfully");
+
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
