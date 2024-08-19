@@ -104,6 +104,7 @@ export async function createSession( user_id, token ) {
       [user_id, token]
     );
     const id = result.insertId;
+    console.log(id);
     return getSessionByID(id);
   } catch (e) {
     console.error(e);
@@ -161,4 +162,35 @@ export async function updateUserBio(id, bio) {
   }
 }
 
-// console.log(users);
+export async function getBlogByID(id) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM blogs 
+      WHERE id = ?
+      `, 
+      [id]
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function createBlog(userID, title, media, content){
+  try{
+    const [result] = await pool.query(
+      `
+      INSERT INTO blogs (owner_id, title, media, content)
+      VALUES ( ?, ?, ?, ?)
+      `,
+      [userID, title, media, content]
+    );
+    const id = result.insertId;
+    return getBlogByID(id);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}

@@ -81,10 +81,29 @@ CREATE TABLE blogs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     owner_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
+    media VARCHAR(255),
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id)
 );
 
+-- @block
+INSERT INTO blogs (owner_id, title, media, content)
+VALUES 
+    (1, 'My First Blog', 'media1.jpg', 'This is my first blog'),
+    (2, 'My Second Blog', 'media2.jpg', 'This is my second blog'),
+    (3, 'My Third Blog', 'media3.jpg', 'This is my third blog'),
+    (4, 'My Fourth Blog', 'media4.jpg', 'This is my fourth blog');
 
 
+
+
+-- @block
+SELECT * FROM blogs;
+
+
+-- @block
+DELETE FROM blogs;
+
+-- @block
+DROP TABLE blogs;

@@ -1,14 +1,14 @@
-import { 
-  getUsers, 
-  getUserByID, 
-  getUserByEmail, 
-  createUser, 
-  deleteUserByID, 
-  getSession, 
-  createSession, 
-  deleteSession, 
+import {
+  getUserByID,
+  getUserByEmail,
+  createUser,
+  deleteUserByID,
+  getSession,
+  createSession,
+  deleteSession,
   updateUserAvatar,
   updateUserBio,
+  createBlog,
 } from "./database.js";
 
 import express from "express";
@@ -25,18 +25,10 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 const app = express();
 
-dotenv.config();
-
-app.use(express.static("public"));
-app.use(express.json());
-app.use(cors({ credentials: true, origin: CLIENT_URL }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
+    console.log(file);
   }
   , 
   filename: (req, file, cb) => {
@@ -48,22 +40,14 @@ const storage = multer.diskStorage({
 // const storage = multer.memoryStorage();  // multer configuration
 const upload = multer({ storage: storage });  // multer configuration
 
-// app.get("/users", async (req, res) => {
-//     const users = await getUsers();
-//     res.send(users);
-// });
+dotenv.config();
 
-// app.get("/users/:id", async (req, res) => {
-//   const id = req.params.id;
-//   const user = await getUser(id);
-//   res.send(user);
-// });
+app.use(express.static("public"));
+app.use(express.json());
+app.use(cors({ credentials: true, origin: CLIENT_URL }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// app.post("/users", async (req, res) => {
-//     const { username, password, email, gender } = req.body
-//     const user = await createUser(username, password, email, gender);
-//     res.status(201).send(user);
-// })
 
 
 app.get("/users", async (req, res) => {
@@ -229,7 +213,7 @@ app.put("/bio", async (req, res) => {
 
 });
 
-app.post("/create", async (req, res) => {
+app.post("/create", upload.single("media"), async (req, res) => {
   try {
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
@@ -244,20 +228,20 @@ app.post("/create", async (req, res) => {
       return;
     }
     const { title, media, content } = req.body;
-    console.log(title, media, content);
-
     // save the post to the database
-    // const post = await createBlog(userID, title, media, content);
-    // if (post == null) {
-    //   res.status(404).send("Post not created");
-    //   return;
-    res.status(201).send("Blogged Successfully");
-
+    const blog = await createBlog(userID, title, media, content);
+    if (blog == null) {
+      res.status(404).send("Post not created");
+      return;
+    }
+    res.status(201).send(blog);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
   }
-})
+});
+
+// Authentication ##############################################################
 
 app.post("/login", async (req, res) => {
 

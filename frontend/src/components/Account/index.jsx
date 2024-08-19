@@ -194,7 +194,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
           </div>
         </div>
       )}
-      <div>
+      <div className="blogs-container">
         <h2>Your Posts</h2>
         <div>{posts}</div>
       </div>

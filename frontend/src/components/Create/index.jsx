@@ -3,19 +3,23 @@ import "./index.scss";
 import api from "../../api/posts";
 
 const Create = () => {
-  const [title, setTitles] = useState();
+  const [title, setTitle] = useState();
   const [media, setMedia] = useState();
   const [content, setContent] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await api.post("/create", {
-        title,
-        media,
-        content,
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("media", media);
+      const result = await api.post("/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log(result);
+      console.log(result.data);
     } catch (e) {
       console.log(e);
     }
@@ -33,9 +37,12 @@ const Create = () => {
               Title:
               <input
                 type="text"
+                name="title"
+                id="title"
                 onChange={(e) => {
-                  setTitles(e.target.value);
+                  setTitle(e.target.value);
                 }}
+                required
               />
             </label>
           </div>
@@ -44,20 +51,28 @@ const Create = () => {
               Media:
               <input
                 type="file"
+                name="media"
+                id="media"
                 onChange={(e) => {
-                  setTitles(e.target.value);
+                  setMedia(e.target.files[0]);
                 }}
                 accept="image/*"
+                required
               />
             </label>
           </div>
           <div>
             <label htmlFor="content">
               Content:
-              <textarea name="" id="" cols="30" rows="10" 
+              <textarea
+                name="content"
+                id="content"
+                cols="30"
+                rows="10"
                 onChange={(e) => {
                   setContent(e.target.value);
                 }}
+                required
               ></textarea>
             </label>
           </div>
