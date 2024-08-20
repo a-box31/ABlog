@@ -13,7 +13,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
   const [newAvatar, setNewAvatar] = useState("");
   const [bio, setBio] = useState("");
 
-  const [posts, setPosts] = useState([]);
+  const [blogs, setBlogs] = useState([]);
 
   const navigate = useNavigate();
 
@@ -24,6 +24,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
     getUserName();
     getAvatar();
     getBio();
+    getMyBlogs();
   }, [isLoggedIn]);
 
   const getUserName = async () => {
@@ -97,6 +98,19 @@ const Account = ({ isLoggedIn, isEditable }) => {
   const toggleEdit = () => {
     setEditable(!editable);
   };
+
+  // ##########################################################################
+  
+  const getMyBlogs = async () => {
+    try {
+      const response = await api.get("/blogs");
+      setPosts(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // ##########################################################################
 
   const logout = async () => {
     // send a request to the server to delete the session
@@ -195,8 +209,19 @@ const Account = ({ isLoggedIn, isEditable }) => {
         </div>
       )}
       <div className="blogs-container">
-        <h2>Your Posts</h2>
-        <div>{posts}</div>
+        <h2>Your Blogs</h2>
+        <div>
+          {blogs &&
+            blogs.map((blog) => {
+              return (
+                <div key={blog.id}>
+                  <h2>{blog.title}</h2>
+                  <img src={blog.media} alt="Blog" />
+                  <p>{blog.content}</p>
+                </div>
+              );
+            })}
+        </div>
       </div>
       <div>
         <h2>Settings</h2>

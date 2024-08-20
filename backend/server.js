@@ -213,7 +213,10 @@ app.put("/bio", async (req, res) => {
 
 });
 
-app.post("/create", upload.single("media"), async (req, res) => {
+
+
+
+app.post("/blogs", upload.single("media"), async (req, res) => {
   try {
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
@@ -227,9 +230,9 @@ app.post("/create", upload.single("media"), async (req, res) => {
       res.status(404).send("User Not Found");
       return;
     }
-    const { title, media, content } = req.body;
+    const { title, content } = req.body;
     // save the post to the database
-    const blog = await createBlog(userID, title, media, content);
+    const blog = await createBlog(userID, title, req.file.filename, content);
     if (blog == null) {
       res.status(404).send("Post not created");
       return;

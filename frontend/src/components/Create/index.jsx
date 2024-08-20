@@ -14,7 +14,7 @@ const Create = () => {
       formData.append("title", title);
       formData.append("content", content);
       formData.append("media", media);
-      const result = await api.post("/create", formData, {
+      const result = await api.post("/blogs", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
