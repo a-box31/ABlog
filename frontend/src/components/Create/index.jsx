@@ -27,10 +27,10 @@ const Create = () => {
 
   return (
     <>
-      <div>
+      <div className="title-container">
         <h1>Create</h1>
       </div>
-      <div>
+      <div className="create-container">
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="title">

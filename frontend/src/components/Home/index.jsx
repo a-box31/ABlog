@@ -10,9 +10,7 @@ const Home = () => {
         const getBlogs = async () => {
             try {
                 const response = await api.get("/blogs");
-
-                const data = await response.json();
-                console.log(data);
+                const data = response.data
                 setBlogs(data);
             } catch (e) {
                 console.log(e);
@@ -22,18 +20,30 @@ const Home = () => {
         getBlogs();
     }, []);
 
+    const blogState = () =>{
+      if(blogs === undefined){
+        return "Loading...";
+      } else if(blogs.length === 0){
+        return "No Blogs Found";
+      }
+      return "There are " +blogs.length + " blogs";
+    }
+
     return (
       <>
         <div>
           <h1>Check out the Blogs Below</h1>
         </div>
         <div className="blogs-container">
+          <h2>
+            {blogState}
+          </h2>
           {blogs &&
             blogs.map((blog) => {
               return (
-                <div key={blog.id}>
-                  <h2>{blog.title}</h2>
-                  <img src={blog.media} alt="Blog" />
+                <div key={blog.id} className="blog">
+                  <h3>{blog.title}</h3>
+                  <img src={blog.media} alt="Picture" />
                   <p>{blog.content}</p>
                 </div>
               );

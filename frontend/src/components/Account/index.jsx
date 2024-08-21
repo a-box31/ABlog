@@ -103,7 +103,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
   
   const getMyBlogs = async () => {
     try {
-      const response = await api.get("/blogs");
+      const response = await api.get("/myblogs");
       setPosts(response.data);
     } catch (err) {
       console.error(err);
@@ -223,25 +223,33 @@ const Account = ({ isLoggedIn, isEditable }) => {
             })}
         </div>
       </div>
-      <div>
+      <div className="settings-container">
         <h2>Settings</h2>
-        <button className="logout" onClick={logout}>
-          Logout
-        </button>
-        <div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            required
-          />
-          <button type="submit" onClick={deleteAccount}>
-            Delete Account
-          </button>
+        <div className="account-settings">
+          <label htmlFor="logout">
+            Click here to log out:
+            <button className="logout" onClick={logout}>
+              Logout
+            </button>
+          </label>
+          <div className="delete-account-container">
+            <label htmlFor="password">
+              Enter Password to Delete Account:
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                required
+              />
+            </label>
+            <button type="submit" onClick={deleteAccount}>
+              Delete Account
+            </button>
+          </div>
         </div>
       </div>
     </>
