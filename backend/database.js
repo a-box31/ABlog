@@ -178,6 +178,21 @@ export async function getBlogByID(id) {
   }
 }
 
+export async function getBlogs() {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM blogs
+      `
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+
 export async function createBlog(userID, title, media, content){
   try{
     const [result] = await pool.query(

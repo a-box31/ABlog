@@ -8,6 +8,7 @@ import {
   deleteSession,
   updateUserAvatar,
   updateUserBio,
+  getBlogs,
   createBlog,
 } from "./database.js";
 
@@ -213,8 +214,24 @@ app.put("/bio", async (req, res) => {
 
 });
 
+// BLOGS ######################################################################
 
-
+app.get("/blogs", async (req, res) => {
+  try {
+    const blogs = await getBlogs();
+    if (blogs == null || blogs.length == 0) {
+      res.status(404).send("Blogs Not Found");
+      return
+    }
+    for (let i = 0; i < blogs.length; i++) {
+      blogs[i].media = "http://localhost:3000/images/"+blogs[i].media;
+    }``
+    res.send(blogs);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
 
 app.post("/blogs", upload.single("media"), async (req, res) => {
   try {
