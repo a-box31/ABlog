@@ -23,6 +23,7 @@ import fs from "fs";
 
 const PORT = process.env.PORT;
 const CLIENT_URL = process.env.CLIENT_URL;
+const SERVER_DOMAIN = process.env.SERVER_DOMAIN;
 
 const app = express();
 
@@ -126,8 +127,7 @@ app.get("/avatar", async (req, res) => {
       res.status(404).send("User Not Found");
       return;
     }
-    res.send("http://localhost:3000/images/"+user.avatar);
-    // res.send("http://localhost:3000/images/avatar_1633940733664.jpg");
+    res.send(SERVER_DOMAIN + "/images/" + user.avatar);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
@@ -224,8 +224,8 @@ app.get("/blogs", async (req, res) => {
       return
     }
     for (let i = 0; i < blogs.length; i++) {
-      blogs[i].media = "http://localhost:3000/images/"+blogs[i].media;
-    }``
+      blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
+    }
     res.send(blogs);
   } catch (e) {
     console.error(e);
@@ -353,5 +353,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen( PORT || 3000 , () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on Server Domain: ${SERVER_DOMAIN}`);
 });
