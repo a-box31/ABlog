@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
+import "./index.scss";
 
 const Login = ({isLoggedIn}) => {
   const [email, setEmail] = useState("");
@@ -42,7 +43,7 @@ const Login = ({isLoggedIn}) => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
       <form>
         <div>

@@ -1,0 +1,20 @@
+footer {
+    background: #181818;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100vw;
+    z-index: -1;
+    border-top: 1px solid #b76b00;
+    a {
+        color: #6c757d;
+        text-decoration: none;
+        &:hover {
+            color: #ffa200;
+        }
+    }
+}

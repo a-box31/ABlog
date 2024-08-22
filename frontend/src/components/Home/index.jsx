@@ -16,18 +16,17 @@ const Home = () => {
                 console.log(e);
             }
         };
-
         getBlogs();
     }, []);
 
-    const blogState = () =>{
-      if(blogs === undefined){
+    const blogState = () => {
+      if (blogs === null || blogs === undefined) {
         return "Loading...";
-      } else if(blogs.length === 0){
+      } else if (blogs.length === 0) {
         return "No Blogs Found";
       }
-      return "There are " +blogs.length + " blogs";
-    }
+      return "There are " + blogs.length + " blogs";
+    };
 
     return (
       <>
@@ -36,13 +35,14 @@ const Home = () => {
         </div>
         <div className="blogs-container">
           <h2>
-            {blogState}
+            {blogState()}
           </h2>
           {blogs &&
             blogs.map((blog) => {
               return (
                 <div key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
+                  <div className="date">{Date(blog.created_at)}</div>
                   <img src={blog.media} alt="Picture" />
                   <p>{blog.content}</p>
                 </div>
