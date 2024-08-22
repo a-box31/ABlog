@@ -219,14 +219,15 @@ app.put("/bio", async (req, res) => {
 app.get("/blogs", async (req, res) => {
   try {
     const blogs = await getBlogs();
-    if (blogs == null || blogs.length == 0) {
-      res.status(404).send("Blogs Not Found");
-      return
+    if (blogs == null) {
+      res.status(404).send("No Blogs Found");
+      return;
     }
     for (let i = 0; i < blogs.length; i++) {
       blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
     }
-    res.send(blogs);
+    blogs.reverse();
+    res.status(200).send(blogs);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
