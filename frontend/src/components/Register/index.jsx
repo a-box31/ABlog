@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
+import "./index.scss";
 
 const Register = ({ isLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -41,7 +42,7 @@ const Register = ({ isLoggedIn }) => {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h1>Register</h1>
       <form>
         <div>
