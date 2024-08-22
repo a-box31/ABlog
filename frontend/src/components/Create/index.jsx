@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./index.scss";
 import api from "../../api/posts";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState();
   const [media, setMedia] = useState();
   const [content, setContent] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ const Create = () => {
         },
       });
       console.log(result.data);
+      navigate("/");
     } catch (e) {
       console.log(e);
     }
