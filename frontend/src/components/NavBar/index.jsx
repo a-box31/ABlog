@@ -12,7 +12,7 @@ const NavBar = ({ isLoggedIn }) => {
 
     const getUserName = async () => {
       try {
-        const response = await api.get("/users");
+        const response = await api.get("/user");
         if (isLoggedIn) {
           setAccount(response.data.username);
         } else {

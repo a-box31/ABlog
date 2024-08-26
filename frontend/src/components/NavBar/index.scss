@@ -3,6 +3,8 @@
     height: 70px;
     background: #181818;
     display: flex;
+    position: absolute;
+    z-index: 1;
 
     .logo{
         width: 50%;    

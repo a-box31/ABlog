@@ -59,7 +59,7 @@ const Create = () => {
                 onChange={(e) => {
                   setMedia(e.target.files[0]);
                 }}
-                accept="image/*"
+                accept="image/*, video/*"
                 required
               />
             </label>

@@ -1,6 +1,8 @@
 .page {
     width: 100vw;
     height: 100vh;
+    // background-color: brown;
     overflow-y: scroll;
     overflow-x: hidden;
+    z-index: 1;
 }

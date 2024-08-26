@@ -1,6 +1,7 @@
 import "./index.scss";
-import NavBar from "../NavBar";
 import { Outlet } from "react-router-dom";
+import Sidebar from "../SideBar";
+import NavBar from "../NavBar";
 import Footer from "../Footer";
 
 const Layouts = ({ isLoggedIn }) => {
@@ -8,6 +9,7 @@ const Layouts = ({ isLoggedIn }) => {
       <>
         <div className="page">
           <NavBar isLoggedIn={isLoggedIn} />
+          <Sidebar />
           <Outlet />
           <Footer />
         </div>

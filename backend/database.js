@@ -209,3 +209,19 @@ export async function createBlog(userID, title, media, content){
     return null;
   }
 }
+
+export async function getUserBlogs(userID) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM blogs 
+      WHERE owner_id = ?
+      `,
+      [userID]
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}

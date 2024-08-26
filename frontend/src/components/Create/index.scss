@@ -1,6 +1,6 @@
 .title-container {
-    width: 80%;
-    margin: 10px auto;
+    width: 70%;
+    margin: 100px 20vw;
     
     h1 {
         color: white;
@@ -10,9 +10,9 @@
 }
 
 .create-container {
-    width: 80%;
+    width: 70%;
     height: 100%;
-    margin: 0 auto;
+    margin: 0 20vw;
     padding: 30px 40px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -22,6 +22,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+        // background-color: rgba(255, 255, 255, 0.1);
+        height: 100%;
+        width: 100%;
 
         label {
             color: white;
@@ -39,8 +43,10 @@
 
         textarea {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            height: 80%;
+            padding: 10px 20px;
+            margin: 20px 10px;
+
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -48,7 +54,7 @@
         button {
             width: 10%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px 10px;
             border: none;
             border-radius: 5px;
             background-color: #007bff;

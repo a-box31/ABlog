@@ -13,10 +13,10 @@
 
 .account-container {
   min-width: 300px;
-  max-width: 50%;
+  max-width: 70%;
   height: 100vh;
 
-  margin: auto;
+  margin-left: 20vw;
   // background-color: #11364b;
   // background-color: red;
 }
@@ -32,14 +32,15 @@
     // text-align: center;
   }
   // background-color: rgb(255, 150, 0);
-  width: 80%;
-  margin: auto;
-  margin-top: 20px;
+  width: 70%;
+  margin-left: 20vw;
+  margin-top: 70px;
   // border-radius: 10px 10px 0 0;
 }
 
 .profile-editor {
-  width: 80%;
+  width: 70%;
+  margin-left: 20vw;
 //   height: 600px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -115,9 +116,9 @@
 }
 
 .profile-container {
-  width: 80%;
+  width: 70%;
   min-height: 300px;
-  margin: auto;
+  margin-left: 20vw;
   padding: 30px 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -152,9 +153,9 @@
 }
 
 .blogs-container {
-  width: 80%;
+  width: 70%;
   min-height: 100vh;
-  margin: 100px auto;
+  margin: 100px 20vw;
   padding: 30px 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -168,8 +169,8 @@
 }
 
 .settings-container {
-  width: 80%;
-  margin: 100px auto;
+  width: 70%;
+  margin: 100px 20vw;
   padding: 30px 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);

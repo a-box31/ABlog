@@ -10,6 +10,7 @@ import {
   updateUserBio,
   getBlogs,
   createBlog,
+  getUserBlogs,
 } from "./database.js";
 
 import express from "express";
@@ -29,8 +30,13 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images");
-    console.log(file);
+    if (file.mimetype.includes("image")) {
+      cb(null, "public/images");
+    } else if (file.mimetype.includes("video")) {
+      cb(null, "public/videos");
+    } else {
+      cb(null, "public");
+    }
   }
   , 
   filename: (req, file, cb) => {
@@ -52,7 +58,7 @@ app.use(cookieParser());
 
 
 
-app.get("/users", async (req, res) => {
+app.get("/user", async (req, res) => {
   try {
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
@@ -72,7 +78,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.delete("/users", async (req, res) => {
+app.delete("/user", async (req, res) => {
   try {
     const { password } = req.body;
 
@@ -216,15 +222,33 @@ app.put("/bio", async (req, res) => {
 
 // BLOGS ######################################################################
 
-app.get("/blogs", async (req, res) => {
+
+app.get("/myblogs", async (req, res) => {
   try {
-    const blogs = await getBlogs();
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const blogs = await getUserBlogs(userID);
     if (blogs == null) {
       res.status(404).send("No Blogs Found");
       return;
     }
     for (let i = 0; i < blogs.length; i++) {
-      blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
+      if (
+        blogs[i].media.includes("mp4") ||
+        blogs[i].media.includes("webm") ||
+        blogs[i].media.includes("ogg") ||
+        blogs[i].media.includes("ogv") ||
+        blogs[i].media.includes("avi")
+      ) {
+        blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
+      } else {
+        blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
+      }
     }
     blogs.reverse();
     res.status(200).send(blogs);
@@ -233,6 +257,35 @@ app.get("/blogs", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.get("/blogs", async (req, res) => {
+  try {
+    const blogs = await getBlogs();
+    if (blogs == null) {
+      res.status(404).send("No Blogs Found");
+      return;
+    }
+    for (let i = 0; i < blogs.length; i++) {
+      if (
+        blogs[i].media.includes("mp4") ||
+        blogs[i].media.includes("webm")||
+        blogs[i].media.includes("ogg") ||
+        blogs[i].media.includes("ogv") ||
+        blogs[i].media.includes("avi")
+      ) {
+        blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
+      }else{
+        blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
+      }
+    }
+    blogs.reverse();
+    res.status(200).send(blogs);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
 
 app.post("/blogs", upload.single("media"), async (req, res) => {
   try {

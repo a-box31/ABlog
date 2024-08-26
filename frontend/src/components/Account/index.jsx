@@ -13,7 +13,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
   const [newAvatar, setNewAvatar] = useState("");
   const [bio, setBio] = useState("");
 
-  const [blogs, setBlogs] = useState([]);
+  const [myBlogs, setMyBlogs] = useState([]);
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
 
   const getUserName = async () => {
     try {
-      const response = await api.get("/users");
+      const response = await api.get("/user");
       if (isLoggedIn) {
         setAccount(response.data.username);
       } else {
@@ -104,7 +104,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
   const getMyBlogs = async () => {
     try {
       const response = await api.get("/myblogs");
-      setPosts(response.data);
+      setMyBlogs(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -130,7 +130,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
       }
 
       // delete the account
-      const response = await api.delete("/users", {
+      const response = await api.delete("/user", {
         data: {
           password: password,
         },
@@ -211,12 +211,17 @@ const Account = ({ isLoggedIn, isEditable }) => {
       <div className="blogs-container">
         <h2>Your Blogs</h2>
         <div>
-          {blogs &&
-            blogs.map((blog) => {
+          {myBlogs &&
+            myBlogs.map((blog) => {
               return (
-                <div key={blog.id}>
-                  <h2>{blog.title}</h2>
-                  <img src={blog.media} alt="Blog" />
+                <div key={blog.id} className="blog">
+                  <h3>{blog.title}</h3>
+                  <div className="date">{Date(blog.created_at)}</div>
+                  { blog.media.includes("video") ? (
+                    <video src={blog.media} controls></video>
+                  ) : (
+                    <img src={blog.media} alt="Picture" />
+                  )}
                   <p>{blog.content}</p>
                 </div>
               );

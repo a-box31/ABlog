@@ -30,8 +30,8 @@ const Home = () => {
 
     return (
       <>
-        <div>
-          <h1>Check out the Blogs Below</h1>
+        <div className='title-container'>
+          <h1>Main Feed</h1>
         </div>
         <div className="blogs-container">
           <h2>
@@ -43,7 +43,11 @@ const Home = () => {
                 <div key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
                   <div className="date">{Date(blog.created_at)}</div>
-                  <img src={blog.media} alt="Picture" />
+                  {blog.media.includes("video") ? (
+                    <video src={blog.media} controls></video>
+                  ) : (
+                    <img src={blog.media} alt="Picture" />
+                  )}
                   <p>{blog.content}</p>
                 </div>
               );
