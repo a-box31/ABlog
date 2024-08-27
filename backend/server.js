@@ -193,11 +193,11 @@ app.put("/bio", async (req, res) => {
 
     const { bio } = req.body;
     const isUpdated = await updateUserBio(userID, bio);
-    // if (!isUpdated) {
-    //   res.status(404).send("Something went wrong");
-    //   return;
-    // }
-    // res.status(200).send("Bio Updated Successfully");
+    if (!isUpdated) {
+      res.status(404).send("Something went wrong");
+      return;
+    }
+    res.status(200).send("Bio Updated Successfully");
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
