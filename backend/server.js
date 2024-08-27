@@ -19,7 +19,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import path from "path";  
+import path from "path";
 import fs from "fs";
 
 const PORT = process.env.PORT;
@@ -37,16 +37,18 @@ const storage = multer.diskStorage({
     } else {
       cb(null, "public");
     }
-  }
-  , 
+  },
   filename: (req, file, cb) => {
     console.log(file);
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname) );
-  }
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
 
 // const storage = multer.memoryStorage();  // multer configuration
-const upload = multer({ storage: storage });  // multer configuration
+const upload = multer({ storage: storage }); // multer configuration
 
 dotenv.config();
 
@@ -56,17 +58,9 @@ app.use(cors({ credentials: true, origin: CLIENT_URL }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-
 app.get("/user", async (req, res) => {
   try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const user = await getUserByID(session.user_id);
+    const user = await getUserByID(req.query.id);
     if (user == null) {
       res.status(404).send("User Not Found");
       return;
@@ -121,13 +115,7 @@ app.delete("/user", async (req, res) => {
 
 app.get("/avatar", async (req, res) => {
   try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const userID = session.user_id;
+    const userID = req.query.id;
     const user = await getUserByID(userID);
     if (user == null) {
       res.status(404).send("User Not Found");
@@ -153,7 +141,11 @@ app.put("/avatar", upload.single("avatar"), async (req, res) => {
     // delete the old avatar from the file system storage
     const user = await getUserByID(userID);
     if (user.avatar !== "default.png") {
-      const oldAvatarPath = path.join(process.cwd(), "public/images", user.avatar);
+      const oldAvatarPath = path.join(
+        process.cwd(),
+        "public/images",
+        user.avatar
+      );
       await fs.unlink(oldAvatarPath, (err) => {
         if (err) {
           console.error(err);
@@ -174,16 +166,9 @@ app.put("/avatar", upload.single("avatar"), async (req, res) => {
   }
 });
 
-
 app.get("/bio", async (req, res) => {
   try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const userID = session.user_id;
+    const userID = req.query.id;
     const user = await getUserByID(userID);
     if (user == null) {
       res.status(404).send("User Not Found");
@@ -197,7 +182,7 @@ app.get("/bio", async (req, res) => {
 });
 
 app.put("/bio", async (req, res) => {
-  try{
+  try {
     const sessionID = req.cookies.sessionID;
     const session = await getSession(sessionID);
     if (session == null) {
@@ -205,7 +190,7 @@ app.put("/bio", async (req, res) => {
       return;
     }
     const userID = session.user_id;
-    
+
     const { bio } = req.body;
     const isUpdated = await updateUserBio(userID, bio);
     // if (!isUpdated) {
@@ -217,11 +202,9 @@ app.put("/bio", async (req, res) => {
     console.error(e);
     res.sendStatus(500);
   }
-
 });
 
 // BLOGS ######################################################################
-
 
 app.get("/myblogs", async (req, res) => {
   try {
@@ -267,28 +250,33 @@ app.get("/blogs", async (req, res) => {
     }
     for (let i = 0; i < blogs.length; i++) {
       if (
-        blogs[i].media.includes("mp4") || blogs[i].media.includes("webm")||
-        blogs[i].media.includes("ogg") || blogs[i].media.includes("ogv") ||
-        blogs[i].media.includes("avi") || blogs[i].media.includes("mov") ||
-        blogs[i].media.includes("flv") || blogs[i].media.includes("wmv") ||
-        blogs[i].media.includes("3gp") || blogs[i].media.includes("mkv") ||
-        blogs[i].media.includes("m4v") || blogs[i].media.includes("m4a")        
+        blogs[i].media.includes("mp4") ||
+        blogs[i].media.includes("webm") ||
+        blogs[i].media.includes("ogg") ||
+        blogs[i].media.includes("ogv") ||
+        blogs[i].media.includes("avi") ||
+        blogs[i].media.includes("mov") ||
+        blogs[i].media.includes("flv") ||
+        blogs[i].media.includes("wmv") ||
+        blogs[i].media.includes("3gp") ||
+        blogs[i].media.includes("mkv") ||
+        blogs[i].media.includes("m4v") ||
+        blogs[i].media.includes("m4a")
       ) {
         blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
-        blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar
-      }else{
+        blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar;
+      } else {
         blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
-        blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar
+        blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar;
       }
     }
-    console.log(blogs)
+    // console.log(blogs);
     res.status(200).send(blogs);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
   }
 });
-
 
 app.post("/blogs", upload.single("media"), async (req, res) => {
   try {
@@ -321,7 +309,6 @@ app.post("/blogs", upload.single("media"), async (req, res) => {
 // Authentication ##############################################################
 
 app.post("/login", async (req, res) => {
-
   try {
     const { email, password } = req.body;
     const account = await getUserByEmail(email);
@@ -336,13 +323,13 @@ app.post("/login", async (req, res) => {
 
     // if the password is correct, send the user object
     if (passwordMatch) {
-      // create a new session for the user 
+      // create a new session for the user
       const sessionID = await bcrypt.hash(password, 10);
       const session = await createSession(account.id, sessionID);
 
-      // return the to the cookie of the session to the client 
+      // return the to the cookie of the session to the client
       res
-        .cookie("sessionID", session.token , {
+        .cookie("sessionID", session.token, {
           // expires: new Date( Date.now() + process.env.COOKIE_EXPIRY * 1 ),
           httpOnly: false,
           secure: true,
@@ -351,18 +338,14 @@ app.post("/login", async (req, res) => {
         })
         .status(200)
         .send(`Authenticated as ${account.username}`);
-
-      
     } else {
       res.status(401).send("Incorrect password");
     }
-
   } catch (e) {
     console.error(e);
     // internal server error
     res.sendStatus(500);
   }
-
 });
 
 app.post("/register", async (req, res) => {
@@ -381,11 +364,9 @@ app.post("/register", async (req, res) => {
   } catch (e) {
     console.error(e);
     // internal server error
-    res.status(500).send("Internal server error");  
+    res.status(500).send("Internal server error");
   }
-
 });
-
 
 app.delete("/session", async (req, res) => {
   try {
@@ -402,13 +383,11 @@ app.delete("/session", async (req, res) => {
   }
 });
 
-
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });
 
-app.listen( PORT || 3000 , () => {
+app.listen(PORT || 3000, () => {
   console.log(`Server is running on Server Domain: ${SERVER_DOMAIN}`);
 });

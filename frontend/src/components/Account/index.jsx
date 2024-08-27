@@ -21,21 +21,20 @@ const Account = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserName(id);
+    getUserName();
     getAvatar();
     getBio();
     getMyBlogs();
   }, [id]);
 
-  const getUserName = async (id) => {
+  const getUserName = async () => {
     try {
       const response = await api.get("/user", {
         params: {
           id: id,
-        },
+        }
       });
-      if (id) { 
-
+      if (response) { 
         setAccount(response.data.username);
       } else {
         setAccount("Account");
@@ -47,7 +46,11 @@ const Account = () => {
 
   const getAvatar = async () => {
     try {
-      const response = await api.get("/avatar");
+      const response = await api.get("/avatar",{
+        params: {
+          id: id,
+        }
+      });
       setAvatar(response.data);
     } catch (err) {
       console.error(err);
@@ -78,7 +81,11 @@ const Account = () => {
 
   const getBio = async () => {
     try {
-      const response = await api.get("/bio");
+      const response = await api.get("/bio",{
+        params:{
+          id: id,
+        }
+      });
       setBio(response.data);
     } catch (err) {
       console.error(err);
