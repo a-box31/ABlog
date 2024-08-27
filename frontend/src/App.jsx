@@ -41,7 +41,12 @@ const App = () => {
           <Route path="create" element={<Create />} />
           <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
           <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />
-          <Route path="account" element={<Account isLoggedIn={isLoggedIn} isEditable={false}/>} /> 
+
+          <Route path="account">
+            <Route index element={<Account />} />
+            <Route path=":id" element={<Account/>} /> 
+          </Route>
+
         </Route>
       </Routes>
     </>

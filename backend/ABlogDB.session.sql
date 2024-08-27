@@ -101,6 +101,13 @@ VALUES
 -- @block
 SELECT * FROM blogs;
 
+-- @block
+SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, 
+        blogs.created_at, users.username, users.avatar
+FROM blogs
+JOIN users ON blogs.owner_id = users.id
+ORDER BY blogs.created_at DESC
+
 
 -- @block
 DELETE FROM blogs;

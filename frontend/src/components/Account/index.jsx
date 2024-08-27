@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/posts";
 import Cookies from "js-cookie";
 import "./index.scss";
 
-const Account = ({ isLoggedIn, isEditable }) => {
+const Account = () => {
+
+  const {id} = useParams();
+
   const [password, setPassword] = useState("");
   const [account, setAccount] = useState("Account");
-  const [editable, setEditable] = useState(isEditable);
+  const [editable, setEditable] = useState(false);
 
   const [avatar, setAvatar] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
@@ -18,19 +21,21 @@ const Account = ({ isLoggedIn, isEditable }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-    getUserName();
+    getUserName(id);
     getAvatar();
     getBio();
     getMyBlogs();
-  }, [isLoggedIn]);
+  }, [id]);
 
-  const getUserName = async () => {
+  const getUserName = async (id) => {
     try {
-      const response = await api.get("/user");
-      if (isLoggedIn) {
+      const response = await api.get("/user", {
+        params: {
+          id: id,
+        },
+      });
+      if (id) { 
+
         setAccount(response.data.username);
       } else {
         setAccount("Account");
@@ -201,11 +206,13 @@ const Account = ({ isLoggedIn, isEditable }) => {
         <div className="profile-container">
           <img src={avatar} alt="Avatar" className="avatar" />
           <p>{bio}</p>
+
           <div className="edit-option">
             <button className="btn" onClick={toggleEdit}>
               Edit
             </button>
           </div>
+
         </div>
       )}
       <div className="blogs-container">
@@ -228,6 +235,7 @@ const Account = ({ isLoggedIn, isEditable }) => {
             })}
         </div>
       </div>
+
       <div className="settings-container">
         <h2>Settings</h2>
         <div className="account-settings">

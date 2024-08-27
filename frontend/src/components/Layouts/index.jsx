@@ -6,14 +6,14 @@ import Footer from "../Footer";
 
 const Layouts = ({ isLoggedIn }) => {
     return (
-      <>
+      <div className="overlay">
+        <NavBar isLoggedIn={isLoggedIn} />
+        <Sidebar />
         <div className="page">
-          <NavBar isLoggedIn={isLoggedIn} />
-          <Sidebar />
           <Outlet />
           <Footer />
         </div>
-      </>
+      </div>
     );
 }
 

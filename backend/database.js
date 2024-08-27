@@ -162,27 +162,15 @@ export async function updateUserBio(id, bio) {
   }
 }
 
-export async function getBlogByID(id) {
-  try {
-    const [result] = await pool.query(
-      `
-      SELECT * FROM blogs 
-      WHERE id = ?
-      `, 
-      [id]
-    );
-    return result;
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-}
-
 export async function getBlogs() {
   try {
     const [result] = await pool.query(
       `
-      SELECT * FROM blogs
+      SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, 
+             blogs.created_at, users.username, users.avatar
+      FROM blogs
+      JOIN users ON blogs.owner_id = users.id
+      ORDER BY blogs.created_at DESC
       `
     );
     return result;
