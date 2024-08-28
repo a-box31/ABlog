@@ -15,52 +15,35 @@ const Profile = () => {
   const [newAvatar, setNewAvatar] = useState("");
   const [bio, setBio] = useState("");
 
-  const [myBlogs, setMyBlogs] = useState([]);
+  const [userBlogs, setUserBlogs] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserName();
-    getUserAvatar();
-    getUserBio();
+    getUserProfile();
     getUserBlogs();
   }, [id]);
 
-  const getUserName = async () => {
-    try {
+  const getUserProfile = async () => {
+    try{
       const response = await api.get(`/users/${id}`);
-      if (response) { 
+      console.log(response);  
+      if(response){
         setAccount(response.data.username);
+        setAvatar(response.data.avatar);
+        setBio(response.data.bio);
       } else {
         setAccount("Account");
       }
-    } catch (err) {
+    }catch(err){
       console.error(err);
     }
-  };
+  }
 
-  const getUserAvatar = async () => {
-    try {
-      const response = await api.get(`users/${id}/avatar`);
-      setAvatar(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const getUserBio = async () => {
-    try {
-      const response = await api.get(`/users/${id}/bio`);
-      setBio(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  
   const getUserBlogs = async () => {
     try {
       const response = await api.get(`/users/${id}/blogs`);
-      setMyBlogs(response.data);
+      setUserBlogs(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -89,12 +72,12 @@ const Profile = () => {
       </div>
       <div className="blogs-container">
         <h2>
-          There {myBlogs.length == 1 ? "is" : "are"} {myBlogs.length}{" "}
-          {myBlogs.length == 1 ? "Blog" : "Blogs"}
+          There {userBlogs.length == 1 ? "is" : "are"} {userBlogs.length}{" "}
+          {userBlogs.length == 1 ? "Blog" : "Blogs"}
         </h2>
         <div>
-          {myBlogs &&
-            myBlogs.map((blog) => {
+          {userBlogs &&
+            userBlogs.map((blog) => {
               return (
                 <div key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
