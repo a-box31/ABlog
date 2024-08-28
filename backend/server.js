@@ -198,6 +198,7 @@ app.get("/users/:id", async (req, res) => {
       res.status(404).send("User Not Found");
       return;
     }
+    user.avatar = SERVER_DOMAIN + "/images/" + user.avatar;
     res.send(user);
   } catch (e) {
     console.error(e);

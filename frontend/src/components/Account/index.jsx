@@ -20,6 +20,7 @@ const Account = () => {
 
   useEffect(() => {
     getAccountInfo();
+    getUserBlogs();
   }, []);
 
   const getAccountInfo = async () => {
@@ -72,6 +73,18 @@ const Account = () => {
     }
   };
 
+  // ##########################################################################
+
+  const getUserBlogs = async () => {
+    try {
+      const response = await api.get("/myaccount");
+      const blogs = await api.get(`/users/${response.data.id}/blogs`);
+      setMyBlogs(blogs.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   // ##########################################################################
 
@@ -107,15 +120,6 @@ const Account = () => {
       console.error(err);
     }
   };
-
-  const finishEdit = async () => {
-    try {
-      const response = await api.get("/myaccount");
-      navigate("/profile/" + response.data.id );
-    } catch (err) {
-      console.error(err);
-    } 
-  }
 
   const togglePreview = () => {
     if(!preview) {  
