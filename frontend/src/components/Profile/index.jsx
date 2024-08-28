@@ -4,8 +4,9 @@ import api from "../../api/posts";
 import Cookies from "js-cookie";
 import "./index.scss";
 
-const Account = () => {
-  const { id } = useParams();
+const Profile = () => {
+
+  const {id} = useParams();
 
   const [password, setPassword] = useState("");
   const [account, setAccount] = useState("Account");
@@ -19,16 +20,16 @@ const Account = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getMyUsername();
-    getMyAvatar();
-    getMyBio();
-    getMyBlogs();
+    getUserName();
+    getUserAvatar();
+    getUserBio();
+    getUserBlogs();
   }, [id]);
 
-  const getMyUsername = async () => {
+  const getUserName = async () => {
     try {
-      const response = await api.get("/myaccount");
-      if (response) {
+      const response = await api.get(`/users/${id}`);
+      if (response) { 
         setAccount(response.data.username);
       } else {
         setAccount("Account");
@@ -38,44 +39,32 @@ const Account = () => {
     }
   };
 
-  const getMyAvatar = async () => {
+  const getUserAvatar = async () => {
     try {
-      const response = await api.get("/avatar", {
-        params: {
-          id: id,
-        },
-      });
+      const response = await api.get(`users/${id}/avatar`);
       setAvatar(response.data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const getMyBio = async () => {
+  const getUserBio = async () => {
     try {
-      const response = await api.get("/bio", {
-        params: {
-          id: id,
-        },
-      });
+      const response = await api.get(`/users/${id}/bio`);
       setBio(response.data);
     } catch (err) {
       console.error(err);
     }
   };
-
-  const getMyBlogs = async () => {
+  
+  const getUserBlogs = async () => {
     try {
-      const response = await api.get(`/users/${id}/blogs`, {
-        params: {
-          id: id,
-        },
-      });
+      const response = await api.get(`/users/${id}/blogs`);
       setMyBlogs(response.data);
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
   // ##########################################################################
 
@@ -95,8 +84,9 @@ const Account = () => {
         alert("Please enter your password to delete your account");
         return;
       }
+
       // delete the account
-      const response = await api.delete("/myaccount", {
+      const response = await api.delete("/user", {
         data: {
           password: password,
         },
@@ -144,38 +134,8 @@ const Account = () => {
             })}
         </div>
       </div>
-
-      <div className="settings-container">
-        <h2>Settings</h2>
-        <div className="account-settings">
-          <label htmlFor="logout">
-            Click here to log out:
-            <button className="logout" onClick={logout}>
-              Logout
-            </button>
-          </label>
-          <div className="delete-account-container">
-            <label htmlFor="password">
-              Enter Password to Delete Account:
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                required
-              />
-            </label>
-            <button type="submit" onClick={deleteAccount}>
-              Delete Account
-            </button>
-          </div>
-        </div>
-      </div>
     </>
   );
 };
 
-export default Account;
+export default Profile;

@@ -7,13 +7,13 @@ import api from "../../api/posts";
 const NavBar = ({ isLoggedIn }) => {
 
   const [account, setAccount] = useState("Account");
-
+  
   useEffect( () => {
 
     const getUserName = async () => {
       try {
-        const response = await api.get("/user");
-        if (isLoggedIn) {
+        const response = await api.get("/myaccount");
+        if (response.data) {
           setAccount(response.data.username);
         } else {
           setAccount("Account");

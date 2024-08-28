@@ -26,7 +26,12 @@ const Home = () => {
       } else if (blogs.length === 0) {
         return "No Blogs Found";
       }
-      return "There are " + blogs.length + " blogs";
+      return(
+        <h2>
+          There {blogs.length == 1 ? "is" : "are"} {blogs.length}{" "}
+          {blogs.length == 1 ? "Blog" : "Blogs"}
+        </h2>
+      )
     };
 
     return (
@@ -46,7 +51,7 @@ const Home = () => {
 
                   <img src={blog.avatar} className="avatar" alt="author avatar" />
                   <div className="author">
-                    <Link to={"account/"+blog.owner_id}>{blog.username}</Link>
+                    <Link to={ "profile/"+blog.owner_id }>{blog.username}</Link>
                   </div>
                   <div className="date">{Date(blog.created_at)}</div>
                   {blog.media.includes("video") ? (

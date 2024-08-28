@@ -11,6 +11,7 @@ import {
   getBlogs,
   createBlog,
   getUserBlogs,
+  deleteUserBlogs,
 } from "./database.js";
 
 import express from "express";
@@ -58,21 +59,28 @@ app.use(cors({ credentials: true, origin: CLIENT_URL }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get("/user", async (req, res) => {
+app.get("/myaccount", async (req, res) => {
   try {
-    const user = await getUserByID(req.query.id);
-    if (user == null) {
-      res.status(404).send("User Not Found");
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Unauthorized");
       return;
     }
-    res.send(user);
+    const user = await getUserByID(session.user_id);
+    if (user == null) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+    res.status(200).send(user);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
   }
 });
 
-app.delete("/user", async (req, res) => {
+
+app.delete("/myaccount", async (req, res) => {
   try {
     const { password } = req.body;
 
@@ -89,6 +97,12 @@ app.delete("/user", async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, session.token);
     if (!passwordMatch) {
       res.status(401).send("Wrong Password");
+      return;
+    }
+
+    const blogsAreDeleted = await deleteUserBlogs(session.user_id);
+    if (!blogsAreDeleted) {
+      res.status(404).send("Blogs Not Found");
       return;
     }
 
@@ -113,9 +127,24 @@ app.delete("/user", async (req, res) => {
   }
 });
 
-app.get("/avatar", async (req, res) => {
+app.get("/users/:id", async (req, res) => {
   try {
-    const userID = req.query.id;
+    const user = await getUserByID(req.params.id);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+
+app.get("/users/:id/avatar", async (req, res) => {
+  try {
+    const userID = req.params.id;
     const user = await getUserByID(userID);
     if (user == null) {
       res.status(404).send("User Not Found");
@@ -128,47 +157,47 @@ app.get("/avatar", async (req, res) => {
   }
 });
 
-app.put("/avatar", upload.single("avatar"), async (req, res) => {
-  try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const userID = session.user_id;
+// app.put("/avatar", upload.single("avatar"), async (req, res) => {
+//   try {
+//     const sessionID = req.cookies.sessionID;
+//     const session = await getSession(sessionID);
+//     if (session == null) {
+//       res.status(401).send("Session Not Found");
+//       return;
+//     }
+//     const userID = session.user_id;
 
-    // delete the old avatar from the file system storage
-    const user = await getUserByID(userID);
-    if (user.avatar !== "default.png") {
-      const oldAvatarPath = path.join(
-        process.cwd(),
-        "public/images",
-        user.avatar
-      );
-      await fs.unlink(oldAvatarPath, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      });
-    }
-    // update the user avatar in the database
-    const isUpdated = await updateUserAvatar(userID, req.file.filename);
-    if (!isUpdated) {
-      res.status(404).send("Something went wrong");
-      return;
-    }
-    res.status(200).send("Profile Updated Successfully");
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-});
+//     // delete the old avatar from the file system storage
+//     const user = await getUserByID(userID);
+//     if (user.avatar !== "default.png") {
+//       const oldAvatarPath = path.join(
+//         process.cwd(),
+//         "public/images",
+//         user.avatar
+//       );
+//       await fs.unlink(oldAvatarPath, (err) => {
+//         if (err) {
+//           console.error(err);
+//           return;
+//         }
+//       });
+//     }
+//     // update the user avatar in the database
+//     const isUpdated = await updateUserAvatar(userID, req.file.filename);
+//     if (!isUpdated) {
+//       res.status(404).send("Something went wrong");
+//       return;
+//     }
+//     res.status(200).send("Profile Updated Successfully");
+//   } catch (e) {
+//     console.error(e);
+//     res.sendStatus(500);
+//   }
+// });
 
-app.get("/bio", async (req, res) => {
+app.get("/users/:id/bio", async (req, res) => {
   try {
-    const userID = req.query.id;
+    const userID = req.params.id;
     const user = await getUserByID(userID);
     if (user == null) {
       res.status(404).send("User Not Found");
@@ -181,40 +210,34 @@ app.get("/bio", async (req, res) => {
   }
 });
 
-app.put("/bio", async (req, res) => {
-  try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const userID = session.user_id;
+// app.put("/bio", async (req, res) => {
+//   try {
+//     const sessionID = req.cookies.sessionID;
+//     const session = await getSession(sessionID);
+//     if (session == null) {
+//       res.status(401).send("Session Not Found");
+//       return;
+//     }
+//     const userID = session.user_id;
 
-    const { bio } = req.body;
-    const isUpdated = await updateUserBio(userID, bio);
-    if (!isUpdated) {
-      res.status(404).send("Something went wrong");
-      return;
-    }
-    res.status(200).send("Bio Updated Successfully");
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-});
+//     const { bio } = req.body;
+//     const isUpdated = await updateUserBio(userID, bio);
+//     if (!isUpdated) {
+//       res.status(404).send("Something went wrong");
+//       return;
+//     }
+//     res.status(200).send("Bio Updated Successfully");
+//   } catch (e) {
+//     console.error(e);
+//     res.sendStatus(500);
+//   }
+// });
 
 // BLOGS ######################################################################
 
-app.get("/myblogs", async (req, res) => {
+app.get("/users/:id/blogs", async (req, res) => {
   try {
-    const sessionID = req.cookies.sessionID;
-    const session = await getSession(sessionID);
-    if (session == null) {
-      res.status(401).send("Session Not Found");
-      return;
-    }
-    const userID = session.user_id;
+    const userID = req.params.id;
     const blogs = await getUserBlogs(userID);
     if (blogs == null) {
       res.status(404).send("No Blogs Found");
@@ -233,7 +256,6 @@ app.get("/myblogs", async (req, res) => {
         blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
       }
     }
-    blogs.reverse();
     res.status(200).send(blogs);
   } catch (e) {
     console.error(e);

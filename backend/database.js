@@ -25,7 +25,12 @@ export async function getUsers() {
 
 export async function getUserByID(id) {
   try {
-    const [result] = await pool.query(`SELECT * FROM users WHERE id = ?`, [id]);
+    const [result] = await pool.query(
+      `
+        SELECT * FROM users WHERE id = ?
+      `, 
+      [id]
+    );
     return result[0];
   } catch (e) {
     console.error(e);
@@ -117,7 +122,8 @@ export async function deleteSession(token) {
   try {
     const [result] = await pool.query(
       `
-      DELETE FROM sessions WHERE token = ?
+        DELETE FROM sessions 
+        WHERE token = ?
       `,
       [token]
     );
@@ -204,6 +210,7 @@ export async function getUserBlogs(userID) {
       `
       SELECT * FROM blogs 
       WHERE owner_id = ?
+      ORDER BY created_at DESC
       `,
       [userID]
     );
@@ -211,5 +218,21 @@ export async function getUserBlogs(userID) {
   } catch (e) {
     console.error(e);
     return null;
+  }
+}
+
+export async function deleteUserBlogs(userID) {
+  try {
+    const [result] = await pool.query(
+      `
+      DELETE FROM blogs 
+      WHERE owner_id = ?
+      `,
+      [userID]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 }

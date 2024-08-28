@@ -4,6 +4,7 @@ import Layouts from "./components/Layouts";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Profile from "./components/Profile";
 import Account from "./components/Account";
 import Create from "./components/Create";
 import "./App.scss";
@@ -41,10 +42,10 @@ const App = () => {
           <Route path="create" element={<Create />} />
           <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
           <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />
-
-          <Route path="account">
-            <Route index element={<Account />} />
-            <Route path=":id" element={<Account/>} /> 
+          <Route path="account" element={<Account />} />
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path=":id" element={<Profile/>} /> 
           </Route>
 
         </Route>
