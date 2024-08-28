@@ -78,30 +78,6 @@ const Profile = () => {
     navigate("/");
   };
 
-  const deleteAccount = async () => {
-    try {
-      if (password === "") {
-        alert("Please enter your password to delete your account");
-        return;
-      }
-
-      // delete the account
-      const response = await api.delete("/user", {
-        data: {
-          password: password,
-        },
-      });
-      alert(response.data);
-
-      // remove the session cookie
-      Cookies.remove("sessionID");
-      // redirect to home
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <>
       <div className="name-container">

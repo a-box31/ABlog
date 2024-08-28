@@ -5,31 +5,30 @@ import Cookies from "js-cookie";
 import "./index.scss";
 
 const Account = () => {
-  const { id } = useParams();
 
   const [password, setPassword] = useState("");
   const [account, setAccount] = useState("Account");
 
   const [avatar, setAvatar] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
-  const [bio, setBio] = useState("");
+  const [bio, setBio] = useState();
+  const [preview, setPreview] = useState(true);
 
   const [myBlogs, setMyBlogs] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getMyUsername();
-    getMyAvatar();
-    getMyBio();
-    getMyBlogs();
-  }, [id]);
+    getAccountInfo();
+  }, []);
 
-  const getMyUsername = async () => {
+  const getAccountInfo = async () => {
     try {
       const response = await api.get("/myaccount");
       if (response) {
         setAccount(response.data.username);
+        setAvatar(response.data.avatar);
+        setBio(response.data.bio);
       } else {
         setAccount("Account");
       }
@@ -38,44 +37,41 @@ const Account = () => {
     }
   };
 
-  const getMyAvatar = async () => {
+  const updateMyAvatar = async (e) => {
+    e.preventDefault();
     try {
-      const response = await api.get("/avatar", {
-        params: {
-          id: id,
+      if (newAvatar === "") {
+        alert("Please select an image to upload");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("avatar", newAvatar);
+      const response = await api.put("/myaccount/avatar", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
       });
+      alert(response.data);
       setAvatar(response.data);
+      getAccountInfo();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const getMyBio = async () => {
+  const updateMyBio = async (e) => {
+    e.preventDefault();
     try {
-      const response = await api.get("/bio", {
-        params: {
-          id: id,
-        },
+      const response = await api.put("/myaccount/bio", {
+        bio: bio,
       });
-      setBio(response.data);
+      alert(response.data);
+      getAccountInfo();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const getMyBlogs = async () => {
-    try {
-      const response = await api.get(`/users/${id}/blogs`, {
-        params: {
-          id: id,
-        },
-      });
-      setMyBlogs(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   // ##########################################################################
 
@@ -112,15 +108,80 @@ const Account = () => {
     }
   };
 
+  const finishEdit = async () => {
+    try {
+      const response = await api.get("/myaccount");
+      navigate("/profile/" + response.data.id );
+    } catch (err) {
+      console.error(err);
+    } 
+  }
+
+  const togglePreview = () => {
+    if(!preview) {  
+      setPreview(true);
+    } else {
+      setPreview(false);
+    }
+  }
+
   return (
     <>
       <div className="name-container">
         <h1>@{account}</h1>
       </div>
-      <div className="profile-container">
-        <img src={avatar} alt="Avatar" className="avatar" />
-        <p>{bio}</p>
-      </div>
+      {preview ? (
+        <div className="profile-container">
+          <div className="edit-btn-container">
+            <button onClick={togglePreview}>Edit</button>
+          </div>
+          <img src={avatar} alt="Avatar" className="avatar" />
+          <p>{bio}</p>
+        </div>
+      ) : (
+        <div className="profile-editor">
+          <div className="preview-btn-container">
+            <h2>Edit Profile</h2>
+            <button onClick={togglePreview}>Preview</button>
+          </div>
+          <div className="avatar-editor">
+            <img src={avatar} alt="Avatar" className="avatar" />
+            <form onSubmit={updateMyAvatar}>
+              <label htmlFor="avatar">
+                Change Avatar:
+                <input
+                  type="file"
+                  name="avatar"
+                  id="avatar"
+                  accept="image/*"
+                  className="avatar-input"
+                  onChange={(e) => {
+                    setNewAvatar(e.target.files[0]);
+                  }}
+                />
+                <button type="submit">Update Avatar</button>
+              </label>
+            </form>
+          </div>
+          <div className="bio-editor">
+            <form onSubmit={updateMyBio}>
+              <label htmlFor="bio">
+                Change Bio:
+                <textarea
+                  name="bio"
+                  id="bio"
+                  placeholder="Enter your bio here"
+                  className="bio-input"
+                  onChange={(e) => {
+                    setBio(e.target.value);
+                  }}
+                >{bio}</textarea>
+                <button type="submit">Update Bio</button>
+              </label>
+            </form>
+          </div>
+        </div>
+      )}
       <div className="blogs-container">
         <h2>
           There {myBlogs.length == 1 ? "is" : "are"} {myBlogs.length}{" "}

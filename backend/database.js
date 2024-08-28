@@ -109,7 +109,6 @@ export async function createSession( user_id, token ) {
       [user_id, token]
     );
     const id = result.insertId;
-    console.log(id);
     return getSessionByID(id);
   } catch (e) {
     console.error(e);
@@ -118,14 +117,14 @@ export async function createSession( user_id, token ) {
 
 }
 
-export async function deleteSession(token) {
+export async function deleteSession(user_id) {
   try {
     const [result] = await pool.query(
       `
         DELETE FROM sessions 
-        WHERE token = ?
+        WHERE user_id = ?
       `,
-      [token]
+      [user_id]
     );
     return true;
   } catch (e) {
@@ -167,6 +166,23 @@ export async function updateUserBio(id, bio) {
     return false;
   }
 }
+
+export async function getBlogByID(id) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM blogs
+      WHERE blogs.id = ?
+      `,
+      [id]
+    );
+    return result[0];
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 
 export async function getBlogs() {
   try {

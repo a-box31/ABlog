@@ -1,0 +1,139 @@
+.profile-editor {
+  width: 70%;
+  margin-left: 20vw;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+}
+
+.edit-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+
+  button {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+  }
+}
+
+.preview-btn-container {
+  display: flex;  
+  justify-content: space-between;
+  padding: 10px;
+
+  h2{
+    color: white;
+    font-size: 2rem;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  button {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+  }
+
+}
+
+.avatar-editor {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 250px;
+    height: 250px;
+    border-radius: 100%;
+    border: 3px solid orange;
+    background-color: white;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    label {
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+
+  button {
+    width: 100px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+  }
+}
+
+.bio-editor {
+  width: 100%;
+  // background-color: rgb(255, 106, 0);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    // background-color: red;
+    width: 60%;
+    label {
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+
+  .bio-input {
+    width: 100%;
+    margin: auto;
+    height: 500px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    resize: none;
+    font-size: 2rem;
+  }
+
+  button {
+    width: 100px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+  }
+}
+
+.finish-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}

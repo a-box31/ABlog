@@ -72,6 +72,7 @@ app.get("/myaccount", async (req, res) => {
       res.status(401).send("Unauthorized");
       return;
     }
+    user.avatar = SERVER_DOMAIN + "/images/" + user.avatar;
     res.status(200).send(user);
   } catch (e) {
     console.error(e);
@@ -106,7 +107,7 @@ app.delete("/myaccount", async (req, res) => {
       return;
     }
 
-    const sessionIsDeleted = await deleteSession(sessionID);
+    const sessionIsDeleted = await deleteSession(session.user_id);
     if (!sessionIsDeleted) {
       res.status(404).send("Session Not Found");
       return;
@@ -121,6 +122,69 @@ app.delete("/myaccount", async (req, res) => {
     }
 
     res.status(200).send("User Deleted Successfully").end();
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+
+app.put("/myaccount/avatar", upload.single("avatar"), async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+
+    // delete the old avatar from the file system storage
+    const user = await getUserByID(userID);
+    if (user.avatar !== "default.png") {
+      const oldAvatarPath = path.join(
+        process.cwd(),
+        "public/images",
+        user.avatar
+      );
+      await fs.unlink(oldAvatarPath, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    }
+    // update the user avatar in the database
+    const isUpdated = await updateUserAvatar(userID, req.file.filename);
+    if (!isUpdated) {
+      res.status(404).send("Something went wrong");
+      return;
+    }
+    res.status(200).send("Profile Updated Successfully");
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+
+app.put("/myaccount/bio", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+
+    const { bio } = req.body;
+    const isUpdated = await updateUserBio(userID, bio);
+    if (!isUpdated) {
+      res.status(404).send("Something went wrong");
+      return;
+    }
+    res.status(200).send("Bio Updated Successfully");
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
@@ -157,43 +221,7 @@ app.get("/users/:id/avatar", async (req, res) => {
   }
 });
 
-// app.put("/avatar", upload.single("avatar"), async (req, res) => {
-//   try {
-//     const sessionID = req.cookies.sessionID;
-//     const session = await getSession(sessionID);
-//     if (session == null) {
-//       res.status(401).send("Session Not Found");
-//       return;
-//     }
-//     const userID = session.user_id;
 
-//     // delete the old avatar from the file system storage
-//     const user = await getUserByID(userID);
-//     if (user.avatar !== "default.png") {
-//       const oldAvatarPath = path.join(
-//         process.cwd(),
-//         "public/images",
-//         user.avatar
-//       );
-//       await fs.unlink(oldAvatarPath, (err) => {
-//         if (err) {
-//           console.error(err);
-//           return;
-//         }
-//       });
-//     }
-//     // update the user avatar in the database
-//     const isUpdated = await updateUserAvatar(userID, req.file.filename);
-//     if (!isUpdated) {
-//       res.status(404).send("Something went wrong");
-//       return;
-//     }
-//     res.status(200).send("Profile Updated Successfully");
-//   } catch (e) {
-//     console.error(e);
-//     res.sendStatus(500);
-//   }
-// });
 
 app.get("/users/:id/bio", async (req, res) => {
   try {
@@ -210,28 +238,6 @@ app.get("/users/:id/bio", async (req, res) => {
   }
 });
 
-// app.put("/bio", async (req, res) => {
-//   try {
-//     const sessionID = req.cookies.sessionID;
-//     const session = await getSession(sessionID);
-//     if (session == null) {
-//       res.status(401).send("Session Not Found");
-//       return;
-//     }
-//     const userID = session.user_id;
-
-//     const { bio } = req.body;
-//     const isUpdated = await updateUserBio(userID, bio);
-//     if (!isUpdated) {
-//       res.status(404).send("Something went wrong");
-//       return;
-//     }
-//     res.status(200).send("Bio Updated Successfully");
-//   } catch (e) {
-//     console.error(e);
-//     res.sendStatus(500);
-//   }
-// });
 
 // BLOGS ######################################################################
 
@@ -292,7 +298,6 @@ app.get("/blogs", async (req, res) => {
         blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar;
       }
     }
-    // console.log(blogs);
     res.status(200).send(blogs);
   } catch (e) {
     console.error(e);
@@ -393,7 +398,12 @@ app.post("/register", async (req, res) => {
 app.delete("/session", async (req, res) => {
   try {
     const sessionID = req.cookies.sessionID;
-    const result = await deleteSession(sessionID);
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(404).send("Session Not Found");
+      return;
+    }
+    const result = await deleteSession(session.user_id);
     if (result) {
       res.sendStatus(200);
     } else {
