@@ -15,4 +15,3 @@ Clone the repository to a local directory and run the following commands.
 - cd frontend
 - npm install
 - npm run dev
-- go to http://localhost:5178 in a browser
