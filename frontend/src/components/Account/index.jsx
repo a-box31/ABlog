@@ -14,6 +14,9 @@ const Account = () => {
   const [bio, setBio] = useState();
   const [preview, setPreview] = useState(true);
 
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
+
   const [myBlogs, setMyBlogs] = useState([]);
 
   const navigate = useNavigate();
@@ -21,6 +24,8 @@ const Account = () => {
   useEffect(() => {
     getAccountInfo();
     getUserBlogs();
+    getFollowers();
+    getFollowing();
   }, []);
 
   const getAccountInfo = async () => {
@@ -72,6 +77,25 @@ const Account = () => {
       console.error(err);
     }
   };
+
+  const getFollowers = async () => {
+    try {
+      const response = await api.get("/myaccount/followers");
+      setFollowers(response.data.length);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getFollowing = async () => {
+    try {
+      const response = await api.get("/myaccount/following");
+      setFollowing(response.data.length);
+    } catch (err){
+      console.error(err)
+    } 
+  }
+
 
   // ##########################################################################
 
@@ -141,6 +165,10 @@ const Account = () => {
           </div>
           <img src={avatar} alt="Avatar" className="avatar" />
           <p>{bio}</p>
+          <div className="following">{following} Following</div>
+          <div className="followers">
+            {followers} {followers == 1 ? "Follower" : "Followers"}
+          </div>
         </div>
       ) : (
         <div className="profile-editor">
@@ -179,7 +207,9 @@ const Account = () => {
                   onChange={(e) => {
                     setBio(e.target.value);
                   }}
-                >{bio}</textarea>
+                >
+                  {bio}
+                </textarea>
                 <button type="submit">Update Bio</button>
               </label>
             </form>

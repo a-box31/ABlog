@@ -54,6 +54,7 @@
     border: 3px solid orange;
     float: left;
     margin-right: 20px;
+    background-color: white;
   }
 
   p {
@@ -74,6 +75,28 @@
     };
   }
 
+  .followers{
+    font-size: 1.5rem;
+  }
+
+  .following {
+    font-size: 1.5rem;
+  }
+
+  .follow-btn{
+    button{
+      background-color: orange;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  }
+
 }
 
 .blogs-container {
@@ -91,81 +114,3 @@
     margin-bottom: 20px;
   }
 }
-
-.settings-container {
-  width: 70%;
-  margin: 100px 20vw;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  background-color: rgba(255, 255, 255, 0.1);
-  
-  h2 {
-    color: white;
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-
-  .account-settings {
-
-    width: 20%;
-    margin: auto;
-    text-align: right;
-
-    label {
-      color: white;
-      font-weight: bold;
-      font-size: 1.5rem;
-
-      input {
-        margin: 10px;
-        padding: 5px;
-        border-radius: 5px;
-        border: none;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 1rem;
-      }
-    }
-
-    .logout {
-      background-color: red;
-      color: white;
-      font-weight: bold;
-      font-size: 1rem;
-
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      
-    }
-
-    .logout:hover {
-      background-color: darkred;
-    }
-
-    .delete-account-container {
-      margin-top: 20px;
-      button {
-        background-color: red;
-        color: white;
-        font-weight: bold;
-        font-size: 1rem;
-
-        padding: 10px;
-        margin: 10px;
-        border: none;
-        border-radius: 5px;
-        margin-top: 10px;
-      }
-
-    }
-  }
-
-}
-
-
-
-
