@@ -558,6 +558,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-app.listen(PORT || 3000, () => {
+app.listen( PORT || 3000, () => {
   console.log(`Server is running on Server Domain: ${SERVER_DOMAIN}`);
 });
