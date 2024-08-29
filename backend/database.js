@@ -252,3 +252,67 @@ export async function deleteUserBlogs(userID) {
     return false;
   }
 }
+
+export async function followUser(userID, followerID) {
+  try {
+    const [result] = await pool.query(
+      `
+      INSERT INTO followers (user_id, followed_id)
+      VALUES ( ?, ?)
+      `,
+      [userID, followerID]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export async function unfollowUser(userID, followerID) {
+  try {
+    const [result] = await pool.query(
+      `
+      DELETE FROM followers
+      WHERE user_id = ? AND followed_id = ?
+      `,
+      [userID, followerID]
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export async function getUserFollowers(followedID) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM followers
+      WHERE followed_id = ?
+      `,
+      [followedID]
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export async function getUserFollowing(userID) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM followers
+      WHERE user_id = ?
+      `,
+      [userID]
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
