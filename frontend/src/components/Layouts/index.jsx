@@ -4,10 +4,10 @@ import Sidebar from "../SideBar";
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 
-const Layouts = ({ isLoggedIn }) => {
+const Layouts = () => {
     return (
       <div className="overlay">
-        <NavBar isLoggedIn={isLoggedIn} />
+        <NavBar />
         <Sidebar />
         <div className="page">
           <Outlet />

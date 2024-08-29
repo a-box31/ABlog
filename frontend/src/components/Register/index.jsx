@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
 import "./index.scss";
 
-const Register = ({ isLoggedIn }) => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

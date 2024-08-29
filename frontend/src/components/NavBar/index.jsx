@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import LogoA from "../../assets/logo-a.png";
 import { Link } from "react-router-dom";
 import "./index.scss";
 import api from "../../api/posts";
+import {UserContext} from "../../App";
 
-const NavBar = ({ isLoggedIn }) => {
+const NavBar = () => {
 
   const [account, setAccount] = useState("Account");
+  const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
   
   useEffect( () => {
 
@@ -25,7 +27,7 @@ const NavBar = ({ isLoggedIn }) => {
 
     getUserName();
 
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <>

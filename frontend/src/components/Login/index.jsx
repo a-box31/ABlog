@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
 import "./index.scss";
+import { UserContext } from "../../App";
 
-const Login = ({isLoggedIn}) => {
+
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
-  useEffect(() => { 
-    if(isLoggedIn){
-      navigate("/account");
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -30,6 +28,8 @@ const Login = ({isLoggedIn}) => {
       });
 
       alert(response.data);
+
+      setIsLoggedIn(true);
 
       // redirect to home page
       setTimeout(() => {

@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/posts";
 import Cookies from "js-cookie";
 import "./index.scss";
+import { UserContext } from "../../App";
 
 const Account = () => {
+
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
   const [password, setPassword] = useState("");
   const [account, setAccount] = useState("Account");
@@ -118,6 +121,8 @@ const Account = () => {
     alert(response.data);
     // remove the session cookie
     Cookies.remove("sessionID");
+    // set the state to false
+    setIsLoggedIn(false);
     // redirect to home
     navigate("/");
   };

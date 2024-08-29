@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, createContext } from "react";
 import Layouts from "./components/Layouts";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -10,48 +10,33 @@ import Create from "./components/Create";
 import "./App.scss";
 import Cookies from "js-cookie";
 
+export const UserContext = createContext();
 
 const App = () => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const checkSessionCookie = () => {
-    const sessionID = Cookies.get("sessionID");
-    if (sessionID) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }
-
-  useEffect(() => {
-    // initial check
-    checkSessionCookie();
-    // check every 5 seconds for the session cookie
-    const intervalID = setInterval(checkSessionCookie, 1000);
-    // cleanup
-    return () => clearInterval(intervalID);
-  }, []);
   
+
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Layouts isLoggedIn={isLoggedIn} />}>
-          <Route index element={<Home />} />
-          <Route path="create" element={<Create />} />
-          <Route path="login" element={<Login isLoggedIn={isLoggedIn} />} />
-          <Route path="register" element={<Register isLoggedIn={isLoggedIn} />} />
-          <Route path="account" element={<Account />} />
-          <Route path="profile">
-            <Route index element={<Profile />} />
-            <Route path=":id" element={<Profile/>} /> 
+      <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <Routes>
+          <Route path="/" element={<Layouts />}>
+            <Route index element={<Home />} />
+            <Route path="create" element={<Create />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="account" element={<Account />} />
+            <Route path="profile">
+              <Route index element={<Profile />} />
+              <Route path=":id" element={<Profile />} />
+            </Route>
           </Route>
-
-        </Route>
-      </Routes>
+        </Routes>
+      </UserContext.Provider>
     </>
   );
-}
+};
 
-export default App
+export default App;
