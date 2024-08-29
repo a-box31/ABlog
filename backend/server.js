@@ -15,6 +15,7 @@ import {
   followUser,
   unfollowUser,
   getUserFollowers,
+  getUserFollowing,
 } from "./database.js";
 
 import express from "express";
@@ -215,6 +216,27 @@ app.get("/myaccount/followers", async (req, res) => {
   }
 });
 
+app.get("/myaccount/following", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const following = await getUserFollowing(userID);
+    if (following == null) {
+      res.status(404).send("No Following Found");
+      return;
+    }
+    res.status(200).send(following);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
 app.get("/users/:id", async (req, res) => {
   try {
     const user = await getUserByID(req.params.id);
@@ -333,6 +355,21 @@ app.get("/users/:id/followers", async (req, res) => {
       return;
     }
     res.status(200).send(followers);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/users/:id/following", async (req, res) => {
+  try {
+    const userID = req.params.id;
+    const following = await getUserFollowing(userID);
+    if (following == null) {
+      res.status(404).send("No Following Found");
+      return;
+    }
+    res.status(200).send(following);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);

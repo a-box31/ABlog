@@ -15,6 +15,7 @@ const Account = () => {
   const [preview, setPreview] = useState(true);
 
   const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
 
   const [myBlogs, setMyBlogs] = useState([]);
 
@@ -24,6 +25,7 @@ const Account = () => {
     getAccountInfo();
     getUserBlogs();
     getFollowers();
+    getFollowing();
   }, []);
 
   const getAccountInfo = async () => {
@@ -84,7 +86,16 @@ const Account = () => {
       console.error(err);
     }
   };
-  
+
+  const getFollowing = async () => {
+    try {
+      const response = await api.get("/myaccount/following");
+      setFollowing(response.data.length);
+    } catch (err){
+      console.error(err)
+    } 
+  }
+
 
   // ##########################################################################
 
@@ -154,6 +165,7 @@ const Account = () => {
           </div>
           <img src={avatar} alt="Avatar" className="avatar" />
           <p>{bio}</p>
+          <div className="following">{following} Following</div>
           <div className="followers">
             {followers} {followers == 1 ? "Follower" : "Followers"}
           </div>

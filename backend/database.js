@@ -300,3 +300,19 @@ export async function getUserFollowers(followedID) {
     return null;
   }
 }
+
+export async function getUserFollowing(userID) {
+  try {
+    const [result] = await pool.query(
+      `
+      SELECT * FROM followers
+      WHERE user_id = ?
+      `,
+      [userID]
+    );
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
