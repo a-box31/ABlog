@@ -12,6 +12,9 @@ import {
   createBlog,
   getUserBlogs,
   deleteUserBlogs,
+  followUser,
+  unfollowUser,
+  getUserFollowers,
 } from "./database.js";
 
 import express from "express";
@@ -191,6 +194,27 @@ app.put("/myaccount/bio", async (req, res) => {
   }
 });
 
+app.get("/myaccount/followers", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const followers = await getUserFollowers(userID);
+    if (followers == null) {
+      res.status(404).send("No Followers Found");
+      return;
+    }
+    res.status(200).send(followers);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
 app.get("/users/:id", async (req, res) => {
   try {
     const user = await getUserByID(req.params.id);
@@ -233,6 +257,82 @@ app.get("/users/:id/bio", async (req, res) => {
       return;
     }
     res.send(user.bio);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/users/:id/follow", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const followedID = req.params.id;
+
+    //user can not follow themselves
+    if (userID == followedID) {
+      res.status(400).send("You can not follow yourself");
+      return;
+    }
+
+    // check if the user is already following the other user
+    const isFollowing = await followUser(userID, followedID);
+    if (isFollowing) {
+      res.status(200).send("Followed Successfully");
+    } else {
+      res.status(404).send("Something went wrong");
+    }
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/users/:id/unfollow", async (req, res) => {
+  try {
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    const userID = session.user_id;
+    const followedID = req.params.id;
+
+    //user can not unfollow themselves
+    if (userID == followedID) {
+      res.status(400).send("You can not unfollow yourself");
+      return;
+    }
+
+    // un-follow the user
+    const unFollowed = await unfollowUser(userID, followedID);
+    if (unFollowed) {
+      res.status(200).send("Unfollowed Successfully");
+    } else {
+      res.status(404).send("Something went wrong");
+    }
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+
+});
+
+app.get("/users/:id/followers", async (req, res) => {
+  try {
+    const followedID = req.params.id;
+    const followers = await getUserFollowers(followedID);
+    if (followers == null) {
+      res.status(404).send("No Followers Found");
+      return;
+    }
+    res.status(200).send(followers);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);

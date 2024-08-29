@@ -15,6 +15,9 @@ const Profile = () => {
   const [newAvatar, setNewAvatar] = useState("");
   const [bio, setBio] = useState("");
 
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followers, setFollowers] = useState(0);
+
   const [userBlogs, setUserBlogs] = useState([]);
 
   const navigate = useNavigate();
@@ -22,12 +25,12 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
     getUserBlogs();
+    getFollowers();
   }, [id]);
 
   const getUserProfile = async () => {
     try{
       const response = await api.get(`/users/${id}`);
-      console.log(response);  
       if(response){
         setAccount(response.data.username);
         setAvatar(response.data.avatar);
@@ -51,15 +54,43 @@ const Profile = () => {
 
   // ##########################################################################
 
-  const logout = async () => {
-    // send a request to the server to delete the session
-    const response = await api.delete(`/session`);
-    alert(response.data);
-    // remove the session cookie
-    Cookies.remove("sessionID");
-    // redirect to home
-    navigate("/");
-  };
+  const getFollowers = async () => {
+    try {
+      const response = await api.get(`/users/${id}/followers`);
+      const user = await api.get("/myaccount");
+      for (let i = 0; i < response.data.length; i++) {
+        if (response.data[i].user_id == user.data.id) {
+          setIsFollowing(true);
+          break;
+        }
+      }
+      setFollowers(response.data.length);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const follow = async () => {
+    try {
+      const response = await api.post(`/users/${id}/follow`);
+      alert(response.data);
+      getFollowers();
+    } catch (err) {
+      console.error(err);
+      alert(err.response.data);
+    }
+  }
+
+  const unfollow = async () => {
+    try {
+      const response = await api.post(`/users/${id}/unfollow`);
+      alert(response.data);
+      getFollowers();
+      setIsFollowing(false);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <>
@@ -69,6 +100,16 @@ const Profile = () => {
       <div className="profile-container">
         <img src={avatar} alt="Avatar" className="avatar" />
         <p>{bio}</p>
+        <div className="followers">
+          {followers} {followers == 1 ? "Follower" : "Followers"}
+        </div>
+        <div>
+          {isFollowing ? (
+            <button onClick={unfollow}>Unfollow</button>
+          ) : (
+            <button onClick={follow}>Follow</button>
+          )}
+        </div>
       </div>
       <div className="blogs-container">
         <h2>

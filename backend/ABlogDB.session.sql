@@ -114,3 +114,22 @@ DELETE FROM blogs;
 
 -- @block
 DROP TABLE blogs;
+
+
+-- @block
+CREATE TABLE followers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    followed_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (followed_id) REFERENCES users(id)
+);
+
+-- @block
+SELECT * FROM followers;
+
+-- @block
+DELETE FROM followers;
+
+-- @block
+DROP TABLE followers;
