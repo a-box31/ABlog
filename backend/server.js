@@ -390,10 +390,29 @@ app.get("/users/:id/blogs", async (req, res) => {
     for (let i = 0; i < blogs.length; i++) {
       if (
         blogs[i].media.includes("mp4") ||
+        blogs[i].media.includes("MP4") ||
         blogs[i].media.includes("webm") ||
+        blogs[i].media.includes("WEBM") ||
         blogs[i].media.includes("ogg") ||
+        blogs[i].media.includes("OGG") ||
         blogs[i].media.includes("ogv") ||
-        blogs[i].media.includes("avi")
+        blogs[i].media.includes("OGV") ||
+        blogs[i].media.includes("avi") ||
+        blogs[i].media.includes("AVI") ||
+        blogs[i].media.includes("mov") ||
+        blogs[i].media.includes("MOV") ||
+        blogs[i].media.includes("flv") ||
+        blogs[i].media.includes("FLV") ||
+        blogs[i].media.includes("wmv") ||
+        blogs[i].media.includes("WMV") ||
+        blogs[i].media.includes("3gp") ||
+        blogs[i].media.includes("3GP") ||
+        blogs[i].media.includes("mkv") ||
+        blogs[i].media.includes("MKV") ||
+        blogs[i].media.includes("m4v") ||
+        blogs[i].media.includes("M4V") ||
+        blogs[i].media.includes("m4a") ||
+        blogs[i].media.includes("M4A")
       ) {
         blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
       } else {
@@ -417,17 +436,29 @@ app.get("/blogs", async (req, res) => {
     for (let i = 0; i < blogs.length; i++) {
       if (
         blogs[i].media.includes("mp4") ||
+        blogs[i].media.includes("MP4") ||
         blogs[i].media.includes("webm") ||
+        blogs[i].media.includes("WEBM") ||
         blogs[i].media.includes("ogg") ||
+        blogs[i].media.includes("OGG") ||
         blogs[i].media.includes("ogv") ||
+        blogs[i].media.includes("OGV") ||
         blogs[i].media.includes("avi") ||
+        blogs[i].media.includes("AVI") ||
         blogs[i].media.includes("mov") ||
+        blogs[i].media.includes("MOV") ||
         blogs[i].media.includes("flv") ||
+        blogs[i].media.includes("FLV") ||
         blogs[i].media.includes("wmv") ||
+        blogs[i].media.includes("WMV") ||
         blogs[i].media.includes("3gp") ||
+        blogs[i].media.includes("3GP") ||
         blogs[i].media.includes("mkv") ||
+        blogs[i].media.includes("MKV") ||
         blogs[i].media.includes("m4v") ||
-        blogs[i].media.includes("m4a")
+        blogs[i].media.includes("M4V") ||
+        blogs[i].media.includes("m4a") ||
+        blogs[i].media.includes("M4A")
       ) {
         blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
         blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar;

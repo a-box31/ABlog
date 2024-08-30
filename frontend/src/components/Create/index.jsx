@@ -21,7 +21,7 @@ const Create = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(result.data);
+      
       navigate("/");
     } catch (e) {
       console.log(e);
