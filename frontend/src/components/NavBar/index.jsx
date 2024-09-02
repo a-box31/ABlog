@@ -8,7 +8,7 @@ import "./index.scss";
 const NavBar = () => {
   const [account, setAccount] = useState("Account");
   const { isLoggedIn } = useContext(UserContext);
-  const [navActive, setNavActive] = useState(false); // State for toggling navigation
+  const [navActive, setNavActive] = useState(false); 
 
   useEffect(() => {
     const getUserName = async () => {

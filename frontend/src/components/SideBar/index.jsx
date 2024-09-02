@@ -33,6 +33,7 @@ const SideBar = () => {
     };
   }, [isSidebarOpen, startX]);
 
+  
   return (
     <nav className={`sidebar ${isSidebarOpen ? "active" : ""}`} aria-label="Sidebar Navigation">
       <div className="section">
