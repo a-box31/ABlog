@@ -1,0 +1,28 @@
+#blog-editor {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    label{ 
+        color: white;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    textarea{
+        width: 100%;
+        height: 200px;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 1.5rem;
+        border-radius: 5px;
+    }
+}
