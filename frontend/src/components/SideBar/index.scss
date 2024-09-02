@@ -1,102 +1,12 @@
-.sidebar {
-    font-family:Arial, Helvetica, sans-serif;
+.sidebar{
     position: fixed;
     top: 70px;
     left: 0;
     height: calc(100vh - 70px);
     width: 250px;
-    background-color: #f4f4f4; /* Light background color */
-    color: #333333; /* Darker text color for contrast */
-    padding: 15px; /* Reduced padding */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .section {
-        margin-bottom: 15px; /* Reduced margin */
-
-        h3 {
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: #333333; /* Darker color for headings */
-            margin-bottom: 10px; /* Reduced margin */
-            padding-bottom: 5px;
-            border-bottom: 1px solid #dddddd; /* Lighter border color */
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-
-            li {
-                font-size: 0.9rem; /* Slightly smaller font size */
-                margin-bottom: 8px; /* Reduced margin */
-                padding: 6px 10px; /* Reduced padding */
-                border-radius: 4px;
-                transition: background-color 0.2s ease, color 0.2s ease;
-                cursor: pointer;
-
-                a {
-                    color: #333333; /* Darker text color */
-                    text-decoration: none;
-                    display: block;
-                    width: 100%;
-
-                }
-            }
-        }
-    }
-
-    .settings-section {
-        margin-top: auto;
-        padding-top: 15px; /* Reduced padding */
-        border-top: 1px solid #dddddd;
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-
-            li {
-                font-size: 0.9rem; /* Consistent font size */
-                padding: 10px; /* Reduced padding */
-                margin-bottom: 0;
-                border-radius: 6px;
-                transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-                cursor: pointer;
-                text-align: center;
-
-                a {
-                    color: #333333; /* Darker text color */
-                    text-decoration: none;
-                    display: block;
-                    font-weight: 600;
-                    letter-spacing: 0.5px;
-
-                    &:hover {
-                        background-color: #cccccc; /* Lighter hover background */
-                        color: #000000; /* Darker text color on hover */
-                        transform: translateY(-1px); /* Slight lift on hover */
-                    }
-                }
-            }
-        }
-    }
-
-    &::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: #f4f4f4;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: #cccccc;
-        border-radius: 10px;
-    }
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+    z-index: 1;
+    transition: 0.5s;
 }

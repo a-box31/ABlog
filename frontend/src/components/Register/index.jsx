@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/posts";
 import "./index.scss";
-import { validate } from "email-validator";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -24,12 +23,6 @@ const Register = () => {
     }
 
     try {
-
-      if (!validate(email)){
-        alert("Please enter valid email");
-        return;
-      }
-      
       const response = await api.post("/register", {
         username: username,
         email: email,
