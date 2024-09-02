@@ -15,15 +15,15 @@
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.3s ease-in-out;
-    transform: translateX(-100%); /* Hide sidebar off-screen initially */
-  
+    transform: none; /* Ensure it is visible on desktop */
+
     &.active {
       transform: translateX(0); /* Slide in when active */
     }
-  
+
     .section {
       margin-bottom: 15px; /* Reduced margin */
-  
+
       h3 {
         font-size: 1.1rem;
         font-weight: 900;
@@ -32,12 +32,12 @@
         padding-bottom: 5px;
         border-bottom: 1px solid #dddddd; /* Lighter border color */
       }
-  
+
       ul {
         list-style: none;
         padding: 0;
         margin: 0;
-  
+
         li {
           font-size: 0.9rem; /* Slightly smaller font size */
           margin-bottom: 8px; /* Reduced margin */
@@ -45,7 +45,7 @@
           border-radius: 4px;
           transition: background-color 0.2s ease, color 0.2s ease;
           cursor: pointer;
-  
+
           a {
             color: #333333; /* Darker text color */
             text-decoration: none;
@@ -55,17 +55,17 @@
         }
       }
     }
-  
+
     .settings-section {
       margin-top: auto;
       padding-top: 15px; /* Reduced padding */
       border-top: 1px solid #dddddd;
-  
+
       ul {
         list-style: none;
         padding: 0;
         margin: 0;
-  
+
         li {
           font-size: 0.9rem; /* Consistent font size */
           padding: 10px; /* Reduced padding */
@@ -74,14 +74,14 @@
           transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
           cursor: pointer;
           text-align: center;
-  
+
           a {
             color: #333333; /* Darker text color */
             text-decoration: none;
             display: block;
             font-weight: 600;
             letter-spacing: 0.5px;
-  
+
             &:hover {
               background-color: #cccccc; /* Lighter hover background */
               color: #000000; /* Darker text color on hover */
@@ -91,20 +91,20 @@
         }
       }
     }
-  
+
     &::-webkit-scrollbar {
       width: 8px;
     }
-  
+
     &::-webkit-scrollbar-track {
       background-color: #f4f4f4;
     }
-  
+
     &::-webkit-scrollbar-thumb {
       background-color: #cccccc;
       border-radius: 10px;
     }
-  
+
     @media (max-width: 768px) {
       width: 200px; /* Reduce width on smaller screens */
       transform: translateX(-100%); /* Initially hide sidebar off-screen */
@@ -113,7 +113,7 @@
         transform: translateX(0); /* Slide in when active */
       }
     }
-  
+
     @media (max-width: 480px) {
       width: 180px; /* Further reduce width on very small screens */
       padding: 10px; /* Reduce padding */
@@ -126,5 +126,4 @@
         font-size: 0.8rem; /* Adjust font size */
       }
     }
-  }
-  
+}
