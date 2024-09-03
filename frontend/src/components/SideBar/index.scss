@@ -19,9 +19,9 @@
     overflow-y: auto;
 
     overflow-x: hidden;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.3s ease-in-out;
     transform: none; /* Ensure it is visible on desktop */
 
@@ -130,9 +130,9 @@
 
 
     .footer-section {
-        // margin-top: auto; /* Reduced margin */
-        position: absolute;
-        bottom: 0; /* Fixed to the bottom */
+        margin-top: auto; /* Reduced margin */
+        // position: absolute;
+        // bottom: 0; /* Fixed to the bottom */
         width: 100%; /* Full width */
         padding-top: 15px; /* Reduced padding */
         border-top: 1px solid #dddddd; /* Lighter border color */
@@ -165,7 +165,7 @@
     }
 
     @media (max-width: 768px) {
-      width: 200px; /* Reduce width on smaller screens */
+    //   width: 200px; /* Reduce width on smaller screens */
       transform: translateX(-100%); /* Initially hide sidebar off-screen */
       
       &.active {
