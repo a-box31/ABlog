@@ -22,8 +22,12 @@
     // display: flex;
     // flex-direction: column;
     // justify-content: space-between;
+    transition: transform 0.3s ease-in-out;
+    transform: none; /* Ensure it is visible on desktop */
 
-
+    &.active {
+      transform: translateX(0); /* Slide in when active */
+    }
     .logo{
         width: 100%;
         border-bottom: 1px solid #dddddd; 
@@ -158,5 +162,27 @@
     &::-webkit-scrollbar-thumb {
         background-color: orange;
         border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      width: 200px; /* Reduce width on smaller screens */
+      transform: translateX(-100%); /* Initially hide sidebar off-screen */
+      
+      &.active {
+        transform: translateX(0); /* Slide in when active */
+      }
+    }
+
+    @media (max-width: 480px) {
+      width: 180px; /* Further reduce width on very small screens */
+      padding: 10px; 
+      
+      .section h3 {
+        font-size: 1rem; /* Adjust heading size */
+      }
+      
+      .section ul li {
+        font-size: 0.8rem; /* Adjust font size */
+      }
     }
 }

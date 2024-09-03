@@ -1,5 +1,5 @@
 
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import LogoA from "../../assets/logo-a.png";
 import "./index.scss";
@@ -9,8 +9,42 @@ const SideBar = () => {
 
     const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
 
+      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [startX, setStartX] = useState(0);
+
+      useEffect(() => {
+        const handleTouchStart = (e) => {
+          setStartX(e.touches[0].clientX);
+        };
+
+        const handleTouchMove = (e) => {
+          if (isSidebarOpen && e.touches[0].clientX < startX - 50) {
+            setIsSidebarOpen(false);
+          } else if (!isSidebarOpen && e.touches[0].clientX > startX + 50) {
+            setIsSidebarOpen(true);
+          }
+        };
+
+        const handleTouchEnd = () => {
+          setStartX(0);
+        };
+
+        window.addEventListener("touchstart", handleTouchStart);
+        window.addEventListener("touchmove", handleTouchMove);
+        window.addEventListener("touchend", handleTouchEnd);
+
+        return () => {
+          window.removeEventListener("touchstart", handleTouchStart);
+          window.removeEventListener("touchmove", handleTouchMove);
+          window.removeEventListener("touchend", handleTouchEnd);
+        };
+      }, [isSidebarOpen, startX]);
+
     return (
-      <div className="sidebar">
+      <div
+        className={`sidebar ${isSidebarOpen ? "active" : ""}`}
+        aria-label="Sidebar Navigation"
+      >
         <div className="logo">
           <Link to="/" className="logo-link">
             <img src={LogoA} alt="A" />
@@ -85,13 +119,13 @@ const SideBar = () => {
           </ul>
         </div>
         <div className="footer-section">
-            <p>
+          <p>
             Created by: <a href="https://www.abinthomas.net">Abin Thomas</a>
-            </p>
-            <p>©2024 ABlog</p>
+          </p>
+          <p>©2024 ABlog</p>
         </div>
       </div>
-  );
+    );
 };
 
 export default SideBar;
