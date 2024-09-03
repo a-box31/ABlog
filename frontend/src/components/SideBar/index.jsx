@@ -55,24 +55,24 @@ const SideBar = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="/feed">Feed</a>
+            <Link to="/feed">Feed</Link>
           </li>
           {isLoggedIn ? (
             <>
               <li>
-                <a href="/create">Create</a>
+                <Link to="/create">Create</Link>
               </li>
               <li>
-                <a href="/account">Account</a>
+                <Link to="/account">Account</Link>
               </li>
             </>
           ) : (
             <>
               <li>
-                <a href="/login">Login</a>
+                <Link to="/login">Login</Link>
               </li>
               <li>
-                <a href="/register">Register</a>
+                <Link to="/register">Register</Link>
               </li>
             </>
           )}
