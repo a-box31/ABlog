@@ -1,7 +1,9 @@
 .navigation {
     width: 100%;
-    height: 50px;
-    background-color: #f4f4f4;
+
+    height: 70px;
+    background-color: #181818;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -151,11 +153,6 @@
             }
           }
         }
-      }
-  
-      .hamburger {
-        display: flex;
-      }
     }
 }
   
