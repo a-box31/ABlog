@@ -3,10 +3,10 @@
     height: 100vh;
     .page {
         position: absolute;
-        top: 70px;
+        // top: 70px;
         left: 250px;
         width: calc(100% - 250px);
-        height: calc(100vh - 70px);
+        height: 100vh;
         overflow-y: scroll;
         overflow-x: hidden;
     }
@@ -18,12 +18,13 @@
 
     /* Track */
     ::-webkit-scrollbar-track {
-        background: #4f4f4f;
+        background: #000000;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
         background: orange;
+        border-radius: 10px;
     }
 
     /* Handle on hover */

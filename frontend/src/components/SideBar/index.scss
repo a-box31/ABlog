@@ -1,19 +1,45 @@
 .sidebar {
     font-family:Arial, Helvetica, sans-serif;
     position: fixed;
-    top: 70px;
+    // top: 70px;
     left: 0;
-    height: calc(100vh - 70px);
+    // height: calc(100vh - 70px);
+    height: 100vh;
     width: 250px;
-    background-color: #f4f4f4; /* Light background color */
-    color: #333333; /* Darker text color for contrast */
+    // background-color: #f4f4f4; /* Light background color */
+    // background-color: black;
+    background-color: #000000;
+    // color: #333333; /* Darker text color for contrast */
+    color: white;
     padding: 15px; /* Reduced padding */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    overflow-x: hidden;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+
+
+    .logo{
+        width: 100%;
+        border-bottom: 1px solid #dddddd; 
+        margin-bottom: 20px;
+        img{
+            width: 35%;
+            height: auto;            
+        }
+        h1{
+            font-size: 2rem; /* Slightly smaller font size */
+            font-weight: 900;
+            // color: #333333; /* Darker color for headings */
+            color: white;
+            // margin-bottom: 10px; /* Reduced margin */
+            padding-bottom: 5px;
+            display: inline-block;   
+            transform: translateY(-10px);         
+        }
+    }
 
     .section {
         margin-bottom: 15px; /* Reduced margin */
@@ -21,7 +47,8 @@
         h3 {
             font-size: 1.1rem;
             font-weight: 900;
-            color: #333333; /* Darker color for headings */
+            // color: #333333; /* Darker color for headings */
+            color: white;
             margin-bottom: 10px; /* Reduced margin */
             padding-bottom: 5px;
             border-bottom: 1px solid #dddddd; /* Lighter border color */
@@ -41,7 +68,8 @@
                 cursor: pointer;
 
                 a {
-                    color: #333333; /* Darker text color */
+                    // color: #333333; /* Darker text color */
+                    color: white;
                     text-decoration: none;
                     display: block;
                     width: 100%;
@@ -52,7 +80,8 @@
     }
 
     .settings-section {
-        margin-top: auto;
+        // margin-top: auto;
+
         padding-top: 15px; /* Reduced padding */
         border-top: 1px solid #dddddd;
 
@@ -71,17 +100,41 @@
                 text-align: center;
 
                 a {
-                    color: #333333; /* Darker text color */
+                    // color: #333333; /* Darker text color */
+                    color: white;
                     text-decoration: none;
                     display: block;
                     font-weight: 600;
                     letter-spacing: 0.5px;
+                    padding: 5px;
 
                     &:hover {
-                        background-color: #cccccc; /* Lighter hover background */
+                        background-color: orange; /* Lighter hover background */
                         color: #000000; /* Darker text color on hover */
                         transform: translateY(-1px); /* Slight lift on hover */
                     }
+                }
+            }
+        }
+    }
+
+    .footer-section {
+        // margin-top: auto; /* Reduced margin */
+        position: absolute;
+        bottom: 0; /* Fixed to the bottom */
+        width: 100%; /* Full width */
+        padding-top: 15px; /* Reduced padding */
+        border-top: 1px solid #dddddd; /* Lighter border color */
+        text-align: center;
+        p {
+            font-size: 1rem; /* Smaller font size */
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            a{
+                color: white;
+                text-decoration: none;
+                &:hover {
+                    color: orange;
                 }
             }
         }
@@ -92,11 +145,11 @@
     }
 
     &::-webkit-scrollbar-track {
-        background-color: #f4f4f4;
+        background-color: black;
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: #cccccc;
+        background-color: orange;
         border-radius: 10px;
     }
 }
