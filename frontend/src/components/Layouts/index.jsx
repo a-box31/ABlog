@@ -7,11 +7,11 @@ import Footer from "../Footer";
 const Layouts = () => {
     return (
       <div className="overlay">
-        <NavBar />
+        {/* <NavBar /> */}
         <Sidebar />
         <div className="page">
           <Outlet />
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     );
