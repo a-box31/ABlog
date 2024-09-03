@@ -16,14 +16,14 @@
     z-index: 1000;
     overflow-y: auto;
     overflow-x: hidden;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
 
     .logo{
         width: 100%;
-        border-bottom: 1px solid #dddddd; 
+        border-bottom: 1px solid orange; 
         margin-bottom: 20px;
         img{
             width: 35%;
@@ -51,7 +51,7 @@
             color: white;
             margin-bottom: 10px; /* Reduced margin */
             padding-bottom: 5px;
-            border-bottom: 1px solid #dddddd; /* Lighter border color */
+            border-bottom: 1px solid orange; /* Lighter border color */
         }
 
         ul {
@@ -83,7 +83,7 @@
         // margin-top: auto;
 
         padding-top: 15px; /* Reduced padding */
-        border-top: 1px solid #dddddd;
+        border-top: 1px solid orange;
 
         ul {
             list-style: none;
@@ -119,12 +119,12 @@
     }
 
     .footer-section {
-        // margin-top: auto; /* Reduced margin */
-        position: absolute;
-        bottom: 0; /* Fixed to the bottom */
+        margin-top: auto; /* Reduced margin */
+        // position: absolute;
+        // bottom: 0; /* Fixed to the bottom */
         width: 100%; /* Full width */
         padding-top: 15px; /* Reduced padding */
-        border-top: 1px solid #dddddd; /* Lighter border color */
+        border-top: 1px solid orange; /* Lighter border color */
         text-align: center;
         p {
             font-size: 1rem; /* Smaller font size */
