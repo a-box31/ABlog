@@ -24,7 +24,8 @@ const NavBar = () => {
       }
     };
     getUserName();
-  }, []);
+
+  }, [isLoggedIn]);
 
   const toggleNav = () => {
     setNavActive(!navActive); // Toggle the navigation visibility

@@ -189,10 +189,10 @@ export async function getBlogs() {
     const [result] = await pool.query(
       `
       SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, 
-             blogs.created_at, users.username, users.avatar
+             blogs.updated_at, users.username, users.avatar
       FROM blogs
       JOIN users ON blogs.owner_id = users.id
-      ORDER BY blogs.created_at DESC
+      ORDER BY blogs.updated_at DESC
       `
     );
     return result;
@@ -226,7 +226,7 @@ export async function getUserBlogs(userID) {
       `
       SELECT * FROM blogs 
       WHERE owner_id = ?
-      ORDER BY created_at DESC
+      ORDER BY updated_at DESC
       `,
       [userID]
     );
@@ -237,14 +237,15 @@ export async function getUserBlogs(userID) {
   }
 }
 
-export async function deleteUserBlogs(userID) {
+export async function updateBlog(id, title, media, content) {
   try {
     const [result] = await pool.query(
       `
-      DELETE FROM blogs 
-      WHERE owner_id = ?
+      UPDATE blogs
+      SET title = ?, media = ?, content = ?
+      WHERE id = ?
       `,
-      [userID]
+      [title, media, content, id]
     );
     return true;
   } catch (e) {

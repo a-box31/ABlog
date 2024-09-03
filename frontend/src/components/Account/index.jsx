@@ -4,6 +4,7 @@ import api from "../../api/posts";
 import Cookies from "js-cookie";
 import "./index.scss";
 import { UserContext } from "../../App";
+import MyBlog from "./MyBlog";
 
 const Account = () => {
 
@@ -230,16 +231,7 @@ const Account = () => {
           {myBlogs &&
             myBlogs.map((blog) => {
               return (
-                <div key={blog.id} className="blog">
-                  <h3>{blog.title}</h3>
-                  <div className="date">{Date(blog.created_at)}</div>
-                  {blog.media.includes("video") ? (
-                    <video src={blog.media} controls></video>
-                  ) : (
-                    <img src={blog.media} alt="Picture" />
-                  )}
-                  <p>{blog.content}</p>
-                </div>
+                <MyBlog key={blog.id} blog={blog}/>
               );
             })}
         </div>

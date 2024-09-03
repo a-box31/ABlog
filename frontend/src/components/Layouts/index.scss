@@ -4,7 +4,8 @@
     .page {
         position: absolute;
         top: 70px;
-        width: 100%;
+        left: 250px;
+        width: calc(100% - 250px);
         height: calc(100vh - 70px);
         overflow-y: scroll;
         overflow-x: hidden;

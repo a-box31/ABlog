@@ -35,59 +35,41 @@ const SideBar = () => {
 
   
   return (
-    <nav className={`sidebar ${isSidebarOpen ? "active" : ""}`} aria-label="Sidebar Navigation">
+    <nav
+      className={`sidebar ${isSidebarOpen ? "active" : ""}`}
+      aria-label="Sidebar Navigation"
+    >
       <div className="section">
         <ul>
           <li>
-            <a href="/" aria-label="Home">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="/feed" aria-label="Main Feed">Main Feed</a>
-          </li>
-          <li>
-            <a href="/followers" aria-label="Followers Feed">Followers Feed</a>
-          </li>
-          <li>
-            <a href="/following" aria-label="Following">Following</a>
+            <a href="/feed">Feed</a>
           </li>
         </ul>
       </div>
-      
       <div className="section">
         <h3>Popular</h3>
         <ul>
-          
-          <li>
-            <a href="/trending" aria-label="Trending">Trending</a>
-          </li>
-          <li>
-            <a href="/top-rated" aria-label="Top Rated">Top Rated</a>
-          </li>
-          <li>
-            <a href="/new-releases" aria-label="New Releases">New Releases</a>
-          </li>
+          <li>Trending</li>
+          <li>Top Rated</li>
+          <li>New Releases</li>
         </ul>
       </div>
-      
       <div className="section">
         <h3>My Network</h3>
         <ul>
-          <li>
-            <a href="/my-followers" aria-label="My Followers">My Followers</a>
-          </li>
-          <li>
-            <a href="/following" aria-label="Following">Following</a>
-          </li>
-          <li>
-            <a href="/suggestions" aria-label="Suggestions">Suggestions</a>
-          </li>
+          <li>My Profile</li>
+          <li>My Subscribers</li>
+          <li>My Subscriptions</li>
+          <li>Suggestions</li>
         </ul>
       </div>
-      
       <div className="settings-section">
         <ul>
           <li>
-            <a href="/settings" aria-label="Settings">Settings</a>
+            <a href="/settings">Settings</a>
           </li>
         </ul>
       </div>

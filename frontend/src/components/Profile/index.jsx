@@ -134,16 +134,16 @@ const Profile = () => {
           {userBlogs &&
             userBlogs.map((blog) => {
               return (
-                <div key={blog.id} className="blog">
+                <article key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
-                  <div className="date">{Date(blog.created_at)}</div>
+                  <div className="date">{Date(blog.updated_at)}</div>
                   {blog.media.includes("video") ? (
                     <video src={blog.media} controls></video>
                   ) : (
                     <img src={blog.media} alt="Picture" />
                   )}
                   <p>{blog.content}</p>
-                </div>
+                </article>
               );
             })}
         </div>

@@ -23,7 +23,7 @@
 
 .name-container {
   width: 70%;
-  margin-left: 20vw;
+  margin: auto;
   margin-top: 70px;
   
   h1 {
@@ -42,7 +42,7 @@
 .profile-container {
   width: 70%;
   min-height: 300px;
-  margin-left: 20vw;
+  margin: 50px auto;
   padding: 30px 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -100,18 +100,4 @@
 
 }
 
-.blogs-container {
-  width: 70%;
-  min-height: 100vh;
-  margin: 100px 20vw;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  background-color: rgba(255, 255, 255, 0.1);
 
-  h2 {
-    color: white;
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-}

@@ -7,12 +7,12 @@ footer {
     margin-top: 20px;
     position: relative;
     bottom: 0;
-    width: 100vw;
     z-index: 5;
     border-top: 1px solid #b76b00;
     a {
         color: #6c757d;
         text-decoration: none;
+        
         &:hover {
             color: #ffa200;
         }
