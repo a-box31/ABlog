@@ -91,7 +91,6 @@ const SideBar = () => {
             <p>©2024 ABlog</p>
         </div>
       </div>
-    </nav>
   );
 };
 

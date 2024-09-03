@@ -578,7 +578,7 @@ app.post("/login", async (req, res) => {
       res
         .cookie("sessionID", session.token, {
           // expires: new Date( Date.now() + process.env.COOKIE_EXPIRY * 1 ),
-          httpOnly: false,
+          httpOnly: true,
           secure: true,
           withCredentials: true,
           sameSite: "none",
