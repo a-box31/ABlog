@@ -56,6 +56,7 @@ const SideBar = () => {
       <div className="section">
         <h3>Popular</h3>
         <ul>
+          
           <li>
             <a href="/trending" aria-label="Trending">Trending</a>
           </li>

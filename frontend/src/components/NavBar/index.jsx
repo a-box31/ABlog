@@ -10,7 +10,7 @@ const NavBar = () => {
   const { isLoggedIn } = useContext(UserContext);
   const [navActive, setNavActive] = useState(false); 
 
-  useEffect(() => {
+  useEffect(() =>{
     const getUserName = async () => {
       try {
         const response = await api.get("/myaccount");
