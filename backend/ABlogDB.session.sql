@@ -83,7 +83,7 @@ CREATE TABLE blogs (
     title VARCHAR(255) NOT NULL,
     media VARCHAR(255),
     content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id)
 );
 
@@ -103,10 +103,10 @@ SELECT * FROM blogs;
 
 -- @block
 SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, 
-        blogs.created_at, users.username, users.avatar
+        blogs.updated_at, users.username, users.avatar
 FROM blogs
 JOIN users ON blogs.owner_id = users.id
-ORDER BY blogs.created_at DESC
+ORDER BY blogs.updated_at DESC
 
 
 -- @block

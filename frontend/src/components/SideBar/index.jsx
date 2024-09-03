@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./index.scss";
 
 const SideBar = () => {
@@ -5,8 +6,8 @@ const SideBar = () => {
         <div className="sidebar">
             <div className="section">
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/feed">Main Feed</a></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><a href="/feed">Feed</a></li>
                     <li><a href="/followers">Followers Feed</a></li>
                     <li><a href="/following">Following</a></li>
                 </ul>

@@ -1,25 +1,37 @@
 import { useState } from "react";
+import api from "../../../api/posts.js";
 import "./index.scss";
 
 const MyBlog = ({ blog }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [media, setMedia] = useState(blog.media);
+
+  const [media, setMedia] = useState();
   const [title, setTitle] = useState(blog.title);
-  const [content, setContent] = useState(blog.content); 
+  const [content, setContent] = useState(blog.content);
 
   const editBlog = async (e) => {
     e.preventDefault();
     try {
+      console.log(title, content, media)
+      if ( !title || !media || !content ) {
+        alert("Please fill in all fields");
+        return;
+      }
+      console.log("Error1")
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
       formData.append("media", media);
-      const result = await api.put(`/blogs/${blog.id}`, formData, {
+      const response = await api.put(`/blogs/${blog.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      setIsEditing(false);
+      alert(response.data);
+      setTimeout(()=>{
+        setIsEditing(false);
+        window.location.reload();
+      }, 1000);
     } catch (e) {
       console.log(e);
     }
@@ -35,7 +47,7 @@ const MyBlog = ({ blog }) => {
               type="text"
               name="title"
               id="title"
-              value={blog.title}
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
@@ -55,14 +67,21 @@ const MyBlog = ({ blog }) => {
           </label>
           <label>
             Content:
-            <textarea value={blog.content} />
+            <textarea
+              name="content"
+              id="content"
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
           </label>
           <button>Update Blog</button>
         </form>
       ) : (
         <div key={blog.id} className="blog">
           <h3>{blog.title}</h3>
-          <div className="date">{Date(blog.created_at)}</div>
+          <div className="date">Last updated: {Date(blog.updated_at)}</div>
           {blog.media.includes("video") ? (
             <video src={blog.media} controls></video>
           ) : (
@@ -70,6 +89,7 @@ const MyBlog = ({ blog }) => {
           )}
           <p>{blog.content}</p>
           <button onClick={() => setIsEditing(true)}>Edit</button>
+          {/* <button className="delete">Delete</button> */}
         </div>
       )}
     </>

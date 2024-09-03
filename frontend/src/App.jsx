@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import Layouts from "./components/Layouts";
 import Home from "./components/Home";
+import Feed from "./components/Feed";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
@@ -15,8 +16,9 @@ export const UserContext = createContext();
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
   
-
+  }, []);
 
   return (
     <>
@@ -24,6 +26,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Layouts />}>
             <Route index element={<Home />} />
+            <Route path="feed" element={<Feed />} />
             <Route path="create" element={<Create />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

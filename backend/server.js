@@ -11,7 +11,8 @@ import {
   getBlogs,
   createBlog,
   getUserBlogs,
-  deleteUserBlogs,
+  getBlogByID,
+  updateBlog,
   followUser,
   unfollowUser,
   getUserFollowers,
@@ -62,6 +63,39 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: CLIENT_URL }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+function isVideo(path){
+  if(
+    path.includes("mp4") ||
+    path.includes("MP4") ||
+    path.includes("webm") ||
+    path.includes("WEBM") ||
+    path.includes("ogg") ||
+    path.includes("OGG") ||
+    path.includes("ogv") ||
+    path.includes("OGV") ||
+    path.includes("avi") ||
+    path.includes("AVI") ||
+    path.includes("mov") ||
+    path.includes("MOV") ||
+    path.includes("flv") ||
+    path.includes("FLV") ||
+    path.includes("wmv") ||
+    path.includes("WMV") ||
+    path.includes("3gp") ||
+    path.includes("3GP") ||
+    path.includes("mkv") ||
+    path.includes("MKV") ||
+    path.includes("m4v") ||
+    path.includes("M4V") ||
+    path.includes("m4a") ||
+    path.includes("M4A")
+  ){
+    return true;
+  }else{
+    return false;
+  }
+}
 
 app.get("/myaccount", async (req, res) => {
   try {
@@ -388,32 +422,7 @@ app.get("/users/:id/blogs", async (req, res) => {
       return;
     }
     for (let i = 0; i < blogs.length; i++) {
-      if (
-        blogs[i].media.includes("mp4") ||
-        blogs[i].media.includes("MP4") ||
-        blogs[i].media.includes("webm") ||
-        blogs[i].media.includes("WEBM") ||
-        blogs[i].media.includes("ogg") ||
-        blogs[i].media.includes("OGG") ||
-        blogs[i].media.includes("ogv") ||
-        blogs[i].media.includes("OGV") ||
-        blogs[i].media.includes("avi") ||
-        blogs[i].media.includes("AVI") ||
-        blogs[i].media.includes("mov") ||
-        blogs[i].media.includes("MOV") ||
-        blogs[i].media.includes("flv") ||
-        blogs[i].media.includes("FLV") ||
-        blogs[i].media.includes("wmv") ||
-        blogs[i].media.includes("WMV") ||
-        blogs[i].media.includes("3gp") ||
-        blogs[i].media.includes("3GP") ||
-        blogs[i].media.includes("mkv") ||
-        blogs[i].media.includes("MKV") ||
-        blogs[i].media.includes("m4v") ||
-        blogs[i].media.includes("M4V") ||
-        blogs[i].media.includes("m4a") ||
-        blogs[i].media.includes("M4A")
-      ) {
+      if ( isVideo(blogs[i].media) ) {
         blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
       } else {
         blogs[i].media = SERVER_DOMAIN + "/images/" + blogs[i].media;
@@ -434,32 +443,7 @@ app.get("/blogs", async (req, res) => {
       return;
     }
     for (let i = 0; i < blogs.length; i++) {
-      if (
-        blogs[i].media.includes("mp4") ||
-        blogs[i].media.includes("MP4") ||
-        blogs[i].media.includes("webm") ||
-        blogs[i].media.includes("WEBM") ||
-        blogs[i].media.includes("ogg") ||
-        blogs[i].media.includes("OGG") ||
-        blogs[i].media.includes("ogv") ||
-        blogs[i].media.includes("OGV") ||
-        blogs[i].media.includes("avi") ||
-        blogs[i].media.includes("AVI") ||
-        blogs[i].media.includes("mov") ||
-        blogs[i].media.includes("MOV") ||
-        blogs[i].media.includes("flv") ||
-        blogs[i].media.includes("FLV") ||
-        blogs[i].media.includes("wmv") ||
-        blogs[i].media.includes("WMV") ||
-        blogs[i].media.includes("3gp") ||
-        blogs[i].media.includes("3GP") ||
-        blogs[i].media.includes("mkv") ||
-        blogs[i].media.includes("MKV") ||
-        blogs[i].media.includes("m4v") ||
-        blogs[i].media.includes("M4V") ||
-        blogs[i].media.includes("m4a") ||
-        blogs[i].media.includes("M4A")
-      ) {
+      if ( isVideo(blogs[i].media) ) {
         blogs[i].media = SERVER_DOMAIN + "/videos/" + blogs[i].media;
         blogs[i].avatar = SERVER_DOMAIN + "/images/" + blogs[i].avatar;
       } else {
@@ -496,6 +480,73 @@ app.post("/blogs", upload.single("media"), async (req, res) => {
       return;
     }
     res.status(201).send(blog);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+});
+
+app.put("/blogs/:id", upload.single("media"), async (req, res) => {
+  try {
+    // find the user session to see if they have logged in
+    const sessionID = req.cookies.sessionID;
+    const session = await getSession(sessionID);
+    if (session == null) {
+      res.status(401).send("Session Not Found");
+      return;
+    }
+    // get the user id of the session
+    const userID = session.user_id;
+    const user = await getUserByID(userID);
+    if (user == null) {
+      res.status(404).send("User Not Found");
+      return;
+    }
+    // get the blog id from the request
+    const blogID = req.params.id;
+    // get the title and content from the request
+    const { title, content } = req.body;
+
+    // get the blog from the database
+    const blog = await getBlogByID(blogID);
+    if (blog == null) {
+      res.status(404).send("Post Not Found");
+      return;
+    }
+
+    // check if the user is the owner of the blog
+    if (blog.owner_id != userID) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+
+    // delete the old media from the file system storage
+    let oldMediaPath = "";
+    // if the media is a video, delete it from the videos folder
+    if (isVideo(blog.media)) {
+      oldMediaPath = path.join(process.cwd(), "public/videos", blog.media);
+    } else {
+      oldMediaPath = path.join(process.cwd(), "public/images", blog.media);
+    }
+    await fs.unlink(oldMediaPath, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    });
+
+    // save the post to the database
+    const isUpdated = await updateBlog(
+      blogID,
+      title,
+      req.file.filename,
+      content
+    );
+    if (!isUpdated) {
+      res.status(404).send("Post Not Updated");
+      return;
+    }
+    res.status(200).send("Blog Successfully Updated!");
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
