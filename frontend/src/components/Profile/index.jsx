@@ -134,7 +134,7 @@ const Profile = () => {
           {userBlogs &&
             userBlogs.map((blog) => {
               return (
-                <article key={blog.id} className="blog">
+                <div key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
                   <div className="date">{Date(blog.updated_at)}</div>
                   {blog.media.includes("video") ? (
@@ -143,7 +143,7 @@ const Profile = () => {
                     <img src={blog.media} alt="Picture" />
                   )}
                   <p>{blog.content}</p>
-                </article>
+                </div>
               );
             })}
         </div>

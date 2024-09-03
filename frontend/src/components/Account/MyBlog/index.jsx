@@ -38,7 +38,7 @@ const MyBlog = ({ blog }) => {
   };
 
   return (
-    <article>
+    <>
       {isEditing ? (
         <form id="blog-editor" onSubmit={editBlog}>
           <label>
@@ -92,7 +92,7 @@ const MyBlog = ({ blog }) => {
           {/* <button className="delete">Delete</button> */}
         </div>
       )}
-    </article>
+    </>
   );
 };
 

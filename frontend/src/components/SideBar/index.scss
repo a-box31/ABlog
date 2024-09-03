@@ -1,6 +1,7 @@
 .sidebar {
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     position: fixed;
+
     // top: 70px;
     left: 0;
     // height: calc(100vh - 70px);
@@ -12,15 +13,21 @@
     // color: #333333; /* Darker text color for contrast */
     color: white;
     padding: 15px; /* Reduced padding */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    
+    // box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other elements */
     overflow-y: auto;
+
     overflow-x: hidden;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease-in-out;
+    transform: none; /* Ensure it is visible on desktop */
 
-
+    &.active {
+      transform: translateX(0); /* Slide in when active */
+    }
     .logo{
         width: 100%;
         border-bottom: 1px solid orange; 
@@ -77,9 +84,11 @@
                 }
             }
         }
+      
     }
 
     .settings-section {
+
         // margin-top: auto;
 
         padding-top: 15px; /* Reduced padding */
@@ -115,13 +124,15 @@
                     }
                 }
             }
+          
         }
     }
 
+
     .footer-section {
-        // margin-top: auto; /* Reduced margin */
-        position: absolute;
-        bottom: 0; /* Fixed to the bottom */
+        margin-top: auto; /* Reduced margin */
+        // position: absolute;
+        // bottom: 0; /* Fixed to the bottom */
         width: 100%; /* Full width */
         padding-top: 15px; /* Reduced padding */
         border-top: 1px solid orange; /* Lighter border color */
@@ -141,7 +152,7 @@
     }
 
     &::-webkit-scrollbar {
-        width: 8px;
+      width: 8px;
     }
 
     &::-webkit-scrollbar-track {
@@ -151,5 +162,27 @@
     &::-webkit-scrollbar-thumb {
         background-color: orange;
         border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+    //   width: 200px; /* Reduce width on smaller screens */
+      transform: translateX(-100%); /* Initially hide sidebar off-screen */
+      
+      &.active {
+        transform: translateX(0); /* Slide in when active */
+      }
+    }
+
+    @media (max-width: 480px) {
+      width: 180px; /* Further reduce width on very small screens */
+      padding: 10px; 
+      
+      .section h3 {
+        font-size: 1rem; /* Adjust heading size */
+      }
+      
+      .section ul li {
+        font-size: 0.8rem; /* Adjust font size */
+      }
     }
 }
