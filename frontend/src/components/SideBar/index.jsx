@@ -19,9 +19,6 @@ const SideBar = () => {
         <div className="section">
           <ul>
             <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
               <a href="/feed">Feed</a>
             </li>
             {isLoggedIn ? (
