@@ -17,7 +17,14 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-  
+    const intervalID = setInterval(() =>{
+      if (Cookies.get("sessionID")) {
+        setIsLoggedIn(true);
+      }
+    }, 100)
+    return () => {
+      clearInterval(intervalID);
+    };
   }, []);
 
   return (

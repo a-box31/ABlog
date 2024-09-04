@@ -52,9 +52,6 @@ const SideBar = () => {
       <div className="section">
         <ul>
           <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
             <Link to="/feed">Feed</Link>
           </li>
           {isLoggedIn ? (
@@ -112,7 +109,7 @@ const SideBar = () => {
       <div className="settings-section">
         <ul>
           <li>
-            <a href="/settings">Settings</a>
+            <a href="/account/#settings">Settings</a>
           </li>
         </ul>
       </div>

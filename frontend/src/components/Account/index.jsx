@@ -237,7 +237,7 @@ const Account = () => {
         </div>
       </div>
 
-      <div className="settings-container">
+      <div id="settings" className="settings-container">
         <h2>Settings</h2>
         <div className="account-settings">
           <label htmlFor="logout">
