@@ -1,0 +1,20 @@
+.title-container {
+    width: 70%;
+    margin: 50px auto;
+
+    img {
+        width: 100px;
+        height: auto;
+        transform: translateY(10px);
+    }
+    
+    h1 {
+        color: white;
+        font-size: 3rem;
+        font-weight: bold;
+        
+        font-family: "Helvetica Neue", sans-serif;
+        display: inline;
+        transform: translateY(-10px);
+    }
+}

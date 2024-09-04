@@ -22,7 +22,7 @@ const Create = () => {
         },
       });
       
-      navigate("/");
+      navigate("/feed");
     } catch (e) {
       console.log(e);
     }
@@ -30,10 +30,8 @@ const Create = () => {
 
   return (
     <>
-      <div className="title-container">
-        <h1>Create</h1>
-      </div>
       <div className="create-container">
+        <h1>Create</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="title">

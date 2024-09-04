@@ -224,8 +224,7 @@ const Account = () => {
       )}
       <div className="blogs-container">
         <h2>
-          There {myBlogs.length == 1 ? "is" : "are"} {myBlogs.length}{" "}
-          {myBlogs.length == 1 ? "Blog" : "Blogs"}
+          You have {myBlogs.length}{" "}{myBlogs.length == 1 ? "Blog" : "Blogs"}
         </h2>
         <div>
           {myBlogs &&
