@@ -76,7 +76,8 @@ const MyBlog = ({ blog }) => {
               }}
             />
           </label>
-          <button>Update Blog</button>
+          <button type="submit" class="btn btn-update">Update Blog</button>
+          <button className="btn btn-danger" onClick={() => setIsEditing(false)}>Cancel</button>
         </form>
       ) : (
         <div key={blog.id} className="blog">
@@ -88,7 +89,7 @@ const MyBlog = ({ blog }) => {
             <img src={blog.media} alt="Picture" />
           )}
           <p>{blog.content}</p>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button className="btn" onClick={() => setIsEditing(true)}>Edit</button>
           {/* <button className="delete">Delete</button> */}
         </div>
       )}

@@ -53,7 +53,7 @@ const Feed = () => {
                       <img
                         src={blog.avatar}
                         className="avatar"
-                        alt="author avatar"
+                        alt="avatar"
                       />
                       <div>{blog.username}</div>
                     </Link>
