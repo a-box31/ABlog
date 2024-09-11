@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LogoA from "../../assets/logo-a.png";
 import "./index.scss";
 import { UserContext } from "../../App";
@@ -52,24 +52,24 @@ const SideBar = () => {
       <div className="section">
         <ul>
           <li>
-            <Link to="/feed">Feed</Link>
+            <NavLink to="/feed">Feed</NavLink>
           </li>
           {isLoggedIn ? (
             <>
               <li>
-                <Link to="/create">Create</Link>
+                <NavLink to="/create">Create</NavLink>
               </li>
               <li>
-                <Link to="/account">Account</Link>
+                <NavLink to="/account">Account</NavLink>
               </li>
             </>
           ) : (
             <>
               <li>
-                <Link to="/login">Login</Link>
+                <NavLink to="/login">Login</NavLink>
               </li>
               <li>
-                <Link to="/register">Register</Link>
+                <NavLink to="/register">Register</NavLink>
               </li>
             </>
           )}
@@ -109,7 +109,7 @@ const SideBar = () => {
       <div className="settings-section">
         <ul>
           <li>
-            <a href="/account/#settings">Settings</a>
+            <Link to="/account/#settings">Settings</Link>
           </li>
         </ul>
       </div>
@@ -118,7 +118,6 @@ const SideBar = () => {
           Created by: <a href="https://www.abinthomas.net">Abin Thomas</a>
         </p>
         <p>©2024 ABlog</p>
-
       </div>
     </div>
   );
