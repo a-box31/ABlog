@@ -437,7 +437,8 @@ app.get("/users/:id/blogs", async (req, res) => {
 
 app.get("/blogs", async (req, res) => {
   try {
-    const blogs = await getBlogs();
+    const search = req.query.search;
+    const blogs = await getBlogs(search);
     if (blogs == null) {
       res.status(404).send("No Blogs Found");
       return;

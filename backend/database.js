@@ -184,7 +184,7 @@ export async function getBlogByID(id) {
 }
 
 
-export async function getBlogs() {
+export async function getBlogs(search) {
   try {
     const [result] = await pool.query(
       `
@@ -192,8 +192,10 @@ export async function getBlogs() {
              blogs.updated_at, users.username, users.avatar
       FROM blogs
       JOIN users ON blogs.owner_id = users.id
+      WHERE blogs.title LIKE ? OR blogs.content LIKE ? OR users.username LIKE ?
       ORDER BY blogs.updated_at DESC
-      `
+      `,
+      [`%${search}%`, `%${search}%`, `%${search}%`]
     );
     return result;
   } catch (e) {

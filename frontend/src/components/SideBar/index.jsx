@@ -51,9 +51,6 @@ const SideBar = () => {
       </div>
       <div className="section">
         <ul>
-          <li>
-            <NavLink to="/feed">Feed</NavLink>
-          </li>
           {isLoggedIn ? (
             <>
               <li>
