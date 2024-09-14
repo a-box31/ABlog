@@ -22,7 +22,7 @@ const Create = () => {
         },
       });
       
-      navigate("/feed");
+      navigate("/account");
     } catch (e) {
       console.log(e);
     }

@@ -59,40 +59,40 @@ const Home = () => {
               />
               <button onClick={submit}>Search</button>
             </div>
-            <div className="blogs-container">
-              <h2>{blogState()}</h2>
-              {blogs &&
-                blogs.map((blog) => {
-                  return (
-                    <div key={blog.id} className="blog">
-                      <h3>{blog.title}</h3>
-                      <div className="author">
-                        <Link
-                          className="profile"
-                          to={"/profile/" + blog.owner_id}
-                        >
-                          <img
-                            src={blog.avatar}
-                            className="avatar"
-                            alt="avatar"
-                          />
-                          <div>{blog.username}</div>
-                        </Link>
-                      </div>
-                      <div className="date">
-                        Last updated: {Date(blog.updated_at)}
-                      </div>
-                      {blog.media.includes("video") ? (
-                        <video src={blog.media} controls></video>
-                      ) : (
-                        <img src={blog.media} alt="Picture" />
-                      )}
-                      <p>{blog.content}</p>
-                    </div>
-                  );
-                })}
-            </div>
           </section>
+          <div className="blogs-container">
+            <h2>{blogState()}</h2>
+            {blogs &&
+              blogs.map((blog) => {
+                return (
+                  <div key={blog.id} className="blog">
+                    <h3>{blog.title}</h3>
+                    <div className="author">
+                      <Link
+                        className="profile"
+                        to={"/profile/" + blog.owner_id}
+                      >
+                        <img
+                          src={blog.avatar}
+                          className="avatar"
+                          alt="avatar"
+                        />
+                        <div>{blog.username}</div>
+                      </Link>
+                    </div>
+                    <div className="date">
+                      Last updated: {Date(blog.updated_at)}
+                    </div>
+                    {blog.media.includes("video") ? (
+                      <video src={blog.media} controls></video>
+                    ) : (
+                      <img src={blog.media} alt="Picture" />
+                    )}
+                    <p>{blog.content}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </>
     );

@@ -1,3 +1,5 @@
+
+
 import {
   getUserByID,
   getUserByEmail,
@@ -20,9 +22,9 @@ import {
 } from "./database.js";
 
 import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
@@ -33,6 +35,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
 const SERVER_DOMAIN = process.env.SERVER_DOMAIN;
 
 const app = express();
+dotenv.config();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -56,7 +59,6 @@ const storage = multer.diskStorage({
 // const storage = multer.memoryStorage();  // multer configuration
 const upload = multer({ storage: storage }); // multer configuration
 
-dotenv.config();
 
 app.use(express.static("public"));
 app.use(express.json());
