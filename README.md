@@ -170,7 +170,7 @@ To get the project up and running locally, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-repo-url.git
+    git clone https://github.com/a-box31/ABlog.git
     ```
 
 2. Navigate to the backend directory:
@@ -209,18 +209,23 @@ To get the project up and running locally, follow these steps:
     - Create a `.env` file in the backend root directory.
     - Add the following environment variables:
     ```bash
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASS=your_password
-    DB_NAME=blogApp
+    MYSQL_HOST=localhost
+    MYSQL_USER=root
+    MYSQL_PASSWORD=your_password
+    MYSQL_DATABASE=blogApp
+
+    COOKIE_EXPIRY=86400000
+    PORT=3000
+    CLIENT_URL='http://client_domain_name'
+    SERVER_DOMAIN='http://server_domain_name'
     ```
 
 6. Run the backend server:
     ```bash
-    npm start
+    npm run dev
     ```
 
-7. The backend server will be running on `http://localhost:5000`.
+7. The backend server will be running on `http://localhost:3000`.
 
 ### Frontend Setup
 
@@ -239,6 +244,6 @@ To get the project up and running locally, follow these steps:
     npm run dev
     ```
 
-4. The frontend server will be running on `http://localhost:3000`.
+4. The frontend server will be running on `http://localhost:5173`.
 
 Now, the app should be fully functional with both the backend and frontend running locally.
