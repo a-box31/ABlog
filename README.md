@@ -50,7 +50,7 @@ This is a blogging platform where users can create blogs, follow other users, an
   - **Response**:
     ```json
     {
-      "token": "JWT Token"
+      "token": "Session Token"
     }
     ```
 
@@ -116,7 +116,7 @@ This is a blogging platform where users can create blogs, follow other users, an
     ```json
     {
       "user_id": 1,
-      "token": "JWT Token"
+      "token": "Session Token"
     }
     ```
   - **Response**:
