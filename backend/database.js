@@ -188,7 +188,7 @@ export async function getBlogs(search) {
   try {
     const [result] = await pool.query(
       `
-      SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, 
+      SELECT blogs.id, blogs.owner_id, blogs.title, blogs.media, blogs.content, blogs.rating,
              blogs.updated_at, users.username, users.avatar
       FROM blogs
       JOIN users ON blogs.owner_id = users.id

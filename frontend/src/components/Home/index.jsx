@@ -2,19 +2,20 @@ import {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import api from "../../api/posts";
 import LogoA from "../../assets/logo-a.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faStar as starRating} from "@fortawesome/free-solid-svg-icons";
 import './index.scss'
 
 const Home = () => {
 
     const [search, setSearch] = useState('');
-
     const [blogs, setBlogs] = useState();
-
+    
     const blogState = () => {
       if (blogs === null || blogs === undefined) {
-        return "Please enter a search term...";
+        return <h2>Please enter a search term...</h2>;
       } else if (blogs.length === 0) {
-        return "No Blogs Found";
+        return <h2>No Blogs Found</h2>;
       }
       return (
         <h2>
@@ -40,6 +41,33 @@ const Home = () => {
       }
     }
 
+    function createRating(blog) {
+      let ratings = [];
+      for (let i = 0; i < 5; i++) {
+        if (i < blog.ratings) {
+          ratings.push(
+            <FontAwesomeIcon
+              key={i}
+              icon={starRating}
+              color="#FFD700"
+              onClick={(ratings) => {
+                se
+              }}
+            />
+          );
+        } else {
+          ratings.push(
+            <FontAwesomeIcon
+              key={i}
+              icon={starRating}
+              color="#FFFFFF"
+            />
+          );
+        }
+      }
+      return ratings;
+    };
+
     return (
       <>
         <div className="home">
@@ -61,7 +89,7 @@ const Home = () => {
             </div>
           </section>
           <div className="blogs-container">
-            <h2>{blogState()}</h2>
+            {blogState()}
             {blogs &&
               blogs.map((blog) => {
                 return (
@@ -89,6 +117,13 @@ const Home = () => {
                       <img src={blog.media} alt="Picture" />
                     )}
                     <p>{blog.content}</p>
+                    <div className="ratings-box">
+                      { 
+                        createRating(blog).map((rating) => {
+                          return rating;
+                        })
+                      }
+                    </div>
                   </div>
                 );
               })}

@@ -85,6 +85,7 @@
     font-size: 2rem;
     margin-bottom: 20px;
   }
+
 }
 
 .blog {
@@ -148,5 +149,21 @@
     color: white;
     font-size: 1rem;
     margin-bottom: 10px;
+  }
+
+  .ratings{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .star-empty {
+      color: white;
+      width: 20px;
+      height: 20px;
+      background-color: yellow;
+      margin-right: 10px;
+    }
+
   }
 }

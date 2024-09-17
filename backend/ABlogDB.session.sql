@@ -83,6 +83,7 @@ CREATE TABLE blogs (
     title VARCHAR(255) NOT NULL,
     media VARCHAR(255),
     content TEXT NOT NULL,
+    rating INT NOT NULL DEFAULT 0,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id)
 );
@@ -136,12 +137,16 @@ DROP TABLE followers;
 
 
 -- @block
-CREATE TABLE comments (
+CREATE TABLE ratings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    blog_id INT NOT NULL,
     user_id INT NOT NULL,
-    content TEXT NOT NULL,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (blog_id) REFERENCES blogs(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    blog_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (blog_id) REFERENCES blogs(id)
 );
+
+
+-- @block
+SELECT * FROM ratings;
+
+
