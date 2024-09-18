@@ -90,7 +90,6 @@ const MyBlog = ({ blog }) => {
         <div key={blog.id} className="blog">
           <h3>{blog.title}</h3>
           <div className="date">
-            {console.log(blog)}
             Last updated: {new Date(blog.updated_at).toLocaleString()}
           </div>
           {blog.media.includes("video") ? (
