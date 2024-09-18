@@ -76,13 +76,13 @@ const MyBlog = ({ blog }) => {
               }}
             />
           </label>
-          <button type="submit" class="btn btn-update">Update Blog</button>
+          <button type="submit" className="btn btn-update">Update Blog</button>
           <button className="btn btn-danger" onClick={() => setIsEditing(false)}>Cancel</button>
         </form>
       ) : (
         <div key={blog.id} className="blog">
           <h3>{blog.title}</h3>
-          <div className="date">Last updated: {Date(blog.updated_at)}</div>
+          <div className="date">Last updated: {blog.updated_at} </div>
           {blog.media.includes("video") ? (
             <video src={blog.media} controls></video>
           ) : (
