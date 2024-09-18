@@ -76,20 +76,32 @@ const MyBlog = ({ blog }) => {
               }}
             />
           </label>
-          <button type="submit" className="btn btn-update">Update Blog</button>
-          <button className="btn btn-danger" onClick={() => setIsEditing(false)}>Cancel</button>
+          <button type="submit" className="btn btn-update">
+            Update Blog
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => setIsEditing(false)}
+          >
+            Cancel
+          </button>
         </form>
       ) : (
         <div key={blog.id} className="blog">
           <h3>{blog.title}</h3>
-          <div className="date">Last updated: {blog.updated_at} </div>
+          <div className="date">
+            {console.log(blog)}
+            Last updated: {new Date(blog.updated_at).toLocaleString()}
+          </div>
           {blog.media.includes("video") ? (
             <video src={blog.media} controls></video>
           ) : (
             <img src={blog.media} alt="Picture" />
           )}
           <p>{blog.content}</p>
-          <button className="btn" onClick={() => setIsEditing(true)}>Edit</button>
+          <button className="btn" onClick={() => setIsEditing(true)}>
+            Edit
+          </button>
           {/* <button className="delete">Delete</button> */}
         </div>
       )}

@@ -136,7 +136,10 @@ const Profile = () => {
               return (
                 <div key={blog.id} className="blog">
                   <h3>{blog.title}</h3>
-                  <div className="date">{Date(blog.updated_at)}</div>
+                  <div className="date">
+                    Last updated:{" "}
+                    {new Date(blog.updated_at).toLocaleString()}
+                  </div>
                   {blog.media.includes("video") ? (
                     <video src={blog.media} controls></video>
                   ) : (
