@@ -1,2 +1,2 @@
-Temporary README.md
+Temporary Readme.md for ABlog
 
