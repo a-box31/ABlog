@@ -1,10 +1,20 @@
 prod:
-	sudo docker build -t ablog:latest -f Dockerfile.prod .
-	sudo docker run -p 3000:3000 ablog:latest
+	sudo docker compose -f docker-compose.prod.yml up --build
+
+prod-detach:
+	sudo docker compose -f docker-compose.prod.yml up --build -d
+
+prod-down:
+	sudo docker compose -f docker-compose.prod.yml down
+
+prod-clean:
+	sudo docker compose -f docker-compose.prod.yml down -v
 
 dev:
-	sudo docker build -t ablog:latest .
-	sudo docker run -p 3000:3000 ablog:latest
+	sudo docker compose -f docker-compose.dev.yml up --build
 
-delete:
-	sudo docker rm ablog:latest
+logs:
+	sudo docker compose -f docker-compose.prod.yml logs -f
+
+migrate:
+	sudo docker compose -f docker-compose.prod.yml run --rm migrate

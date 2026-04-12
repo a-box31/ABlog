@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48">
+  <rect x="4" y="4" width="40" height="40" rx="10" fill="#2563eb"/>
+  <path d="M24 14L13 42h6l2.2-6h5.6l2.2 6h6L24 14zm0 7l2.4 9h-4.8l2.4-9z" fill="white"/>
+  <text x="54" y="34" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" fill="#1e293b">Blog</text>
+</svg>

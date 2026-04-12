@@ -9,13 +9,20 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.0",
     "drizzle-orm": "^0.45.1",
+    "jose": "^6.2.2",
     "next": "16.2.1",
     "pg": "^8.20.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "sass-embedded": "^1.99.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",

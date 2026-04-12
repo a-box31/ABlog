@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:${DATABASE_PORT:-5432}/${DATABASE_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: builder
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:${DATABASE_PORT:-5432}/${DATABASE_NAME}
+    command: sh -c "npx drizzle-kit generate --config=drizzle.config.ts && npx drizzle-kit migrate --config=drizzle.config.ts"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-changeme}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-changeme}
+      POSTGRES_DB: ${DATABASE_NAME:-changeme}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-changeme} -d ${DATABASE_NAME:-changeme} -h ${DATABASE_HOST:-localhost} -p ${DATABASE_PORT:-5432}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:
